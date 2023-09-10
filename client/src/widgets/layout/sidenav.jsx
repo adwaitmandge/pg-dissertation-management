@@ -67,7 +67,8 @@ export function Sidenav({ brandImg, brandName, routes }) {
                     </Typography>
                   </li>
                 )}
-                {pages.map(({ icon, name, path }) => (
+                {pages.map(({ icon, name, path }) => {if (name != "tasks" && name != "user-details"  && name !="vcRoom") return(
+                  
                   <li
                     key={name}
                     onClick={
@@ -108,7 +109,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       )}
                     </NavLink>
                   </li>
-                ))}
+                )})}
               </ul>
             );
         })}

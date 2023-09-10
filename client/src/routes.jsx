@@ -9,11 +9,12 @@ import {
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications} from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import MentorMonitor from "./pages/dashboard/views/MentorMonitor";
 import StudentTasks from "./pages/dashboard/views/StudentTasks";
-
+import Room from "./pages/dashboard/room"
+import Videocall from "./pages/dashboard/videocall"
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -58,6 +59,18 @@ export const routes = [
         path: "/student",
         element: <StudentTasks />,
       },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "vc",
+        path: "/videocall",
+        element: <Videocall />,
+      },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "vcRoom",
+        path: "/room/:roomId",
+        element: <Room />,
+      },
     ],
   },
   {
@@ -82,6 +95,7 @@ export const routes = [
         path: "/sign-in",
         element: <SignIn />,
       },
+      
     ],
   },
 ];
