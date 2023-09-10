@@ -12,9 +12,9 @@ const UserProvider = ({ children }) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
 
-    if (!userInfo) {
-      navigate("/auth/sign-in");
-    }
+    // if (!userInfo) {
+    //   navigate("/auth/sign-up");
+    // }
   }, [navigate]);
 
   return (

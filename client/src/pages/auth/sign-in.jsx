@@ -74,7 +74,10 @@ export function SignIn() {
                   <input
                     type="email"
                     name="email"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      console.log(e.target.value);
+                    }}
                     id="email"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-600 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                     placeholder="name@company.com"
@@ -135,12 +138,12 @@ export function SignIn() {
 
                 <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don't have an account yet?{" "}
-                  <a
-                    href="/auth/sign-up"
+                  <button
+                    onClick={() => navigate("/auth/sign-up")}
                     class="font-medium text-blue-600 hover:underline dark:text-blue-500"
                   >
                     Sign up
-                  </a>
+                  </button>
                 </p>
               </form>
             </div>

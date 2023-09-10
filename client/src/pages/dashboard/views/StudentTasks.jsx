@@ -351,7 +351,7 @@ const StudentTasks = () => {
 
   return (
     <>
-      <div className="flex w-[100%] flex-col">
+      <div className="flex w-[100%] flex-col rounded-full">
         <div className="h-[100%] w-[100%]">
           <div className="bg-gray-200">
             <div className=" flex flex-col p-6 md:space-y-[2%]">
