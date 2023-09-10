@@ -3,14 +3,15 @@ import {
   UserPlusIcon,
   UserIcon,
   ChartBarIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 
 export const statisticsCardsData = [
   {
     color: "blue",
     icon: BanknotesIcon,
-    title: "Today's Money",
-    value: "$53k",
+    title: "View Tasks",
+    value: `10 tasks`,
     footer: {
       color: "text-green-500",
       value: "+55%",

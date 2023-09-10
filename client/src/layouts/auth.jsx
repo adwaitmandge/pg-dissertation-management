@@ -33,10 +33,10 @@ export function Auth() {
   ];
 
   return (
-    <div className="relative min-h-screen w-full">
-      <div className="container relative z-40 mx-auto p-4">
-        {/* <Navbar routes={navbarRoutes} /> */}
-      </div>
+    <div className="min-h-screen w-full overflow-hidden">
+      {/* <div className=" z-40 mx-auto overflow-hidden p-4">
+        <Navbar routes={navbarRoutes} />
+      </div> */}
       <Routes>
         {routes.map(
           ({ layout, pages }) =>

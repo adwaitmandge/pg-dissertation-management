@@ -6,10 +6,22 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export function StatisticsCard({ color, icon, title, value, footer }) {
+  const navigate = useNavigate();
+
   return (
-    <Card>
+    <Card
+      className={title == "View Tasks" ? "cursor-pointer" : ""}
+      onClick={
+        title == "View Tasks"
+          ? () => {
+              navigate("/dashboard/student");
+            }
+          : () => {}
+      }
+    >
       <CardHeader
         variant="gradient"
         color={color}

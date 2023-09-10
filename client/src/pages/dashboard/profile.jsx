@@ -14,7 +14,7 @@ import {
 } from "@material-tailwind/react";
 import {
   HomeIcon,
-  ChatBubbleLeftEllipsisIcon,
+  ChatBubbleLeftEllipsisIcon, 
   Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";

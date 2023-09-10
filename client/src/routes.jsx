@@ -5,9 +5,14 @@ import {
   BellIcon,
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
+  ArrowDownLeftIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/solid";
+
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
+import MentorMonitor from "./pages/dashboard/views/MentorMonitor";
+import StudentTasks from "./pages/dashboard/views/StudentTasks";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -41,6 +46,18 @@ export const routes = [
         path: "/notifactions",
         element: <Notifications />,
       },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "user-details",
+        path: "/mentor/:id",
+        element: <MentorMonitor />,
+      },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "tasks",
+        path: "/student",
+        element: <StudentTasks />,
+      },
     ],
   },
   {
@@ -58,6 +75,12 @@ export const routes = [
         name: "sign up",
         path: "/sign-up",
         element: <SignUp />,
+      },
+      {
+        icon: <ArrowLeftOnRectangleIcon {...icon} />,
+        name: "logout",
+        path: "/sign-in",
+        element: <SignIn />,
       },
     ],
   },
