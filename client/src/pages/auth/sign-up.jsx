@@ -52,12 +52,22 @@ export function SignUp() {
       console.log("Missing Credentials");
     }
 
+    const body = {
+      name,
+      email,
+      password,
+      university,
+      department,
+      role,
+      fieldOfInterest,
+    };
+
     try {
       console.log("About to send request");
       const res = await fetch("http://localhost:5000/api/user", {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        body: {
+        body: JSON.stringify({
           name,
           email,
           password,
@@ -65,7 +75,7 @@ export function SignUp() {
           department,
           role,
           fieldOfInterest,
-        },
+        }),
       });
 
       console.log("After the request");
@@ -337,8 +347,8 @@ export function SignUp() {
                       onChange={(e) => setRole(e.target.value)}
                       class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     >
-                      <option value="student">Student</option>
-                      <option value="mentor">Mentor</option>
+                      <option value="Student">Student</option>
+                      <option value="Mentor">Mentor</option>
                     </select>
                   </div>
                   <div>
