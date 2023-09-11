@@ -15,6 +15,8 @@ import MentorMonitor from "./pages/dashboard/views/MentorMonitor";
 import StudentTasks from "./pages/dashboard/views/StudentTasks";
 import Room from "./pages/dashboard/room"
 import Videocall from "./pages/dashboard/videocall"
+import Chatbot from "./pages/dashboard/chatbot";
+import Summary from "./pages/dashboard/summarybot";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -43,7 +45,7 @@ export const routes = [
       },
       {
         icon: <BellIcon {...icon} />,
-        name: "notifactions",
+        name: "notifications",
         path: "/notifactions",
         element: <Notifications />,
       },
@@ -70,6 +72,18 @@ export const routes = [
         name: "vcRoom",
         path: "/room/:roomId",
         element: <Room />,
+      },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "DocGPT",
+        path: "/chatbot",
+        element: <Chatbot />,
+      },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "Summarization",
+        path: "/summary",
+        element: <Summary />,
       },
     ],
   },
