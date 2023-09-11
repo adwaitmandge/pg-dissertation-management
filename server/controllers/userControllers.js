@@ -31,7 +31,10 @@ const registerUser = asyncHandler(async (req, res) => {
     role,
     department,
     university,
+    publications,
   } = req.body;
+
+  console.log("Publications are", publications);
 
   if (!name || !email || !password) {
     res.status(400);
@@ -53,6 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
     role,
     university,
     department,
+    thesis: publications,
   });
 
   if (user) {
@@ -91,6 +95,7 @@ const authUser = asyncHandler(async (req, res) => {
       university: user.university,
       fieldOfInterest: user.fieldOfInterest,
       role: user.role,
+      thesis: user.thesis,
       token: generateToken(user._id),
     });
   } else {
