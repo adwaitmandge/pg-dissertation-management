@@ -11,12 +11,15 @@ import {
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications} from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import MentorMonitor from "./pages/dashboard/views/MentorMonitor";
 import StudentTasks from "./pages/dashboard/views/StudentTasks";
 import ChatPage from "./pages/chat/chat";
-
+import Room from "./pages/dashboard/room"
+import Videocall from "./pages/dashboard/videocall"
+import Chatbot from "./pages/dashboard/chatbot";
+import Summary from "./pages/dashboard/summarybot";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -61,6 +64,30 @@ export const routes = [
         path: "/student",
         element: <StudentTasks />,
       },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "vc",
+        path: "/videocall",
+        element: <Videocall />,
+      },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "vcRoom",
+        path: "/room/:roomId",
+        element: <Room />,
+      },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "DocGPT",
+        path: "/chatbot",
+        element: <Chatbot />,
+      },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "Summarization",
+        path: "/summary",
+        element: <Summary />,
+      },
       // {
       //   icon: <ChatBubbleLeftRightIcon {...icon} />,
       //   name: "chat",
@@ -103,6 +130,7 @@ export const routes = [
         path: "/sign-in",
         element: <SignIn />,
       },
+      
     ],
   },
 ];
