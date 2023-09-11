@@ -72,21 +72,22 @@ export function Sidenav({ brandImg, brandName, routes }) {
               {pages.map(({ icon, name, path }) => {
                 if (
                   name != "user-details" &&
-                  !(user?.role == "Mentor" && name == "tasks")
+                  !(user?.role == "Mentor" && name == "tasks") &&
+                  name != "vcRoom"
                 )
                   return (
                     <li
                       key={name}
-                      // onClick={
-                      //   name == "logout"
-                      //     ? () => {
-                      //         localStorage.removeItem("userInfo");
-                      //         navigate("/auth/sign-in");
-                      //       }
-                      //     : () => {
-                      //         navigate(`/${layout}/${path}`);
-                      //       }
-                      // }
+                      onClick={
+                        name == "logout"
+                          ? () => {
+                              localStorage.removeItem("userInfo");
+                              navigate("/auth/sign-in");
+                            }
+                          : () => {
+                              navigate(`/${layout}/${path}`);
+                            }
+                      }
                     >
                       <NavLink to={`/${layout}${path}`}>
                         {({ isActive }) => (

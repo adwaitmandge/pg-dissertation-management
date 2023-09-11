@@ -5,19 +5,20 @@ import {
   BellIcon,
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
+  ClipboardIcon,
   ChatBubbleLeftRightIcon,
-  ClipboardDocumentListIcon,
-  ArrowDownLeftIcon,
+  VideoCameraIcon,
   ArrowLeftOnRectangleIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/solid";
 
-import { Home, Profile, Tables, Notifications} from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import MentorMonitor from "./pages/dashboard/views/MentorMonitor";
 import StudentTasks from "./pages/dashboard/views/StudentTasks";
 import ChatPage from "./pages/chat/chat";
-import Room from "./pages/dashboard/room"
-import Videocall from "./pages/dashboard/videocall"
+import Room from "./pages/dashboard/room";
+import Videocall from "./pages/dashboard/videocall";
 import Chatbot from "./pages/dashboard/chatbot";
 import Summary from "./pages/dashboard/summarybot";
 const icon = {
@@ -31,25 +32,25 @@ export const routes = [
       {
         icon: <HomeIcon {...icon} />,
         name: "dashboard",
-        path: "/home",
+        path: "home",
         element: <Home />,
       },
       {
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
-        path: "/profile",
+        path: "profile",
         element: <Profile />,
       },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "tables",
-        path: "/tables",
+        path: "tables",
         element: <Tables />,
       },
       {
         icon: <BellIcon {...icon} />,
         name: "notifications",
-        path: "/notifications",
+        path: "notifications",
         element: <Notifications />,
       },
       {
@@ -65,25 +66,25 @@ export const routes = [
         element: <StudentTasks />,
       },
       {
-        icon: <BellIcon {...icon} />,
-        name: "vc",
+        icon: <VideoCameraIcon {...icon} />,
+        name: "Video Call",
         path: "/videocall",
         element: <Videocall />,
       },
       {
-        icon: <BellIcon {...icon} />,
+        icon: <VideoCameraIcon {...icon} />,
         name: "vcRoom",
         path: "/room/:roomId",
         element: <Room />,
       },
       {
-        icon: <BellIcon {...icon} />,
+        icon: <ClipboardIcon {...icon} />,
         name: "DocGPT",
         path: "/chatbot",
         element: <Chatbot />,
       },
       {
-        icon: <BellIcon {...icon} />,
+        icon: <ClipboardDocumentListIcon {...icon} />,
         name: "Summarization",
         path: "/summary",
         element: <Summary />,
@@ -97,7 +98,6 @@ export const routes = [
     ],
   },
   {
-    title: "Connect",
     layout: "chat",
     pages: [
       {
@@ -109,7 +109,6 @@ export const routes = [
     ],
   },
   {
-    title: "auth pages",
     layout: "auth",
     pages: [
       {
@@ -130,7 +129,6 @@ export const routes = [
         path: "/sign-in",
         element: <SignIn />,
       },
-      
     ],
   },
 ];
