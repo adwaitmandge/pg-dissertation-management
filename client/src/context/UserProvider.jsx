@@ -5,8 +5,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const navigate = useNavigate();
   const [user, setUser] = useState();
+  const [selectedChat, setSelectedChat] = useState();
+  const [chats, setChats] = useState([]);
+  const [notification, setNotification] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -18,7 +21,18 @@ const UserProvider = ({ children }) => {
   }, [navigate]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        selectedChat,
+        setSelectedChat,
+        chats,
+        setChats,
+        notification,
+        setNotification,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

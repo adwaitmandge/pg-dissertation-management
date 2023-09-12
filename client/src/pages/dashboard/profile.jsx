@@ -14,15 +14,26 @@ import {
 } from "@material-tailwind/react";
 import {
   HomeIcon,
-  ChatBubbleLeftEllipsisIcon, 
+  ChatBubbleLeftEllipsisIcon,
   Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "@/data";
+import { UserState } from "@/context/UserProvider";
+import { useEffect, useState } from "react";
 
 export function Profile() {
+  const { user } = UserState();
+  const [allThesis, setAllThesis] = useState([]);
+
+  useEffect(() => {
+    setAllThesis(user?.thesis);
+  }, [user]);
+
+  console.log(user);
+
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80)] bg-cover	bg-center">
@@ -40,7 +51,7 @@ export function Profile() {
               />
               <div>
                 <Typography variant="h5" color="blue-gray" className="mb-1">
-                  Richard Davis
+                  {user?.name}
                 </Typography>
                 <Typography
                   variant="small"
@@ -101,10 +112,10 @@ export function Profile() {
               title="Profile Information"
               description="Hi, I'm Alec Thompson, Decisions: If you can't decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
               details={{
-                "first name": "Alec M. Thompson",
+                "first name": user?.name,
                 mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
+                email: user?.email,
+                location: "India",
                 social: (
                   <div className="flex items-center gap-4">
                     <i className="fa-brands fa-facebook text-blue-700" />
@@ -149,65 +160,68 @@ export function Profile() {
               Architects design houses
             </Typography>
             <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-              {projectsData.map(
-                ({ img, title, description, tag, route, members }) => (
-                  <Card key={title} color="transparent" shadow={false}>
-                    <CardHeader
-                      floated={false}
-                      color="gray"
-                      className="mx-0 mt-0 mb-4 h-64 xl:h-40"
-                    >
-                      <img
-                        src={img}
-                        alt={title}
-                        className="h-full w-full object-cover"
-                      />
-                    </CardHeader>
-                    <CardBody className="py-0 px-1">
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
+              {allThesis?.map(
+                ({ img, title, description, tag, route, members }) => {
+                  console.log(title);
+                  return (
+                    <Card key={title} color="transparent" shadow={false}>
+                      {/* <CardHeader
+                        floated={false}
+                        color="gray"
+                        className="mx-0 mt-0 mb-4 h-64 xl:h-40"
                       >
-                        {tag}
-                      </Typography>
-                      <Typography
-                        variant="h5"
-                        color="blue-gray"
-                        className="mt-1 mb-2"
-                      >
-                        {title}
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
-                      >
-                        {description}
-                      </Typography>
-                    </CardBody>
-                    <CardFooter className="mt-6 flex items-center justify-between py-0 px-1">
-                      <Link to={route}>
-                        <Button variant="outlined" size="sm">
-                          view project
-                        </Button>
-                      </Link>
-                      <div>
-                        {members.map(({ img, name }, key) => (
-                          <Tooltip key={name} content={name}>
-                            <Avatar
-                              src={img}
-                              alt={name}
-                              size="xs"
-                              variant="circular"
-                              className={`cursor-pointer border-2 border-white ${
-                                key === 0 ? "" : "-ml-2.5"
-                              }`}
-                            />
-                          </Tooltip>
-                        ))}
-                      </div>
-                    </CardFooter>
-                  </Card>
-                )
+                        <img
+                          src={img}
+                          alt={"Chinese"}
+                          className="h-full w-full object-cover"
+                        />
+                      </CardHeader> */}
+                      <CardBody className="py-0 px-1">
+                        <Typography
+                          variant="small"
+                          className="font-normal text-blue-gray-500"
+                        >
+                          {tag}
+                        </Typography>
+                        <Typography
+                          variant="h5"
+                          color="blue-gray"
+                          className="mt-1 mb-2"
+                        >
+                          {title}
+                        </Typography>
+                        <Typography
+                          variant="small"
+                          className="font-normal text-blue-gray-500"
+                        >
+                          {description}
+                        </Typography>
+                      </CardBody>
+                      <CardFooter className="mt-6 flex items-center justify-between py-0 px-1">
+                        <Link to={route}>
+                          <Button variant="outlined" size="sm">
+                            view project
+                          </Button>
+                        </Link>
+                        <div>
+                          {members?.map(({ img, name }, key) => (
+                            <Tooltip key={name} content={name}>
+                              <Avatar
+                                src={img}
+                                alt={name}
+                                size="xs"
+                                variant="circular"
+                                className={`cursor-pointer border-2 border-white ${
+                                  key === 0 ? "" : "-ml-2.5"
+                                }`}
+                              />
+                            </Tooltip>
+                          ))}
+                        </div>
+                      </CardFooter>
+                    </Card>
+                  );
+                }
               )}
             </div>
           </div>
