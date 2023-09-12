@@ -74,6 +74,10 @@ const userSchema = new mongoose.Schema(
     ],
     thesis: [
       {
+        cloudinaryLink: {
+          type: String,
+          required: true,
+        },
         title: {
           type: String,
           require: true,
@@ -87,9 +91,6 @@ const userSchema = new mongoose.Schema(
           ref: "User",
         },
         status: "String",
-        path: {
-          type: String,
-        },
         feedback: [
           {
             title: {

@@ -14,6 +14,7 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { useState } from "react";
+import cloudinary from "cloudinary-core";
 
 const steps = ["Personal Details", "Qualification", "Publications"];
 
@@ -32,10 +33,65 @@ export function SignUp() {
   const [department, setDepartment] = useState("");
   const [fieldOfInterest, setFieldOfInterest] = useState("");
   const [role, setRole] = useState("");
+  const [publications, setPublications] = useState([]);
+  const [publicationName, setPublicationName] = useState("");
 
   const [loading, setLoading] = useState(false);
-
+  console.log(publications);
   const navigate = useNavigate();
+
+  const cloudinaryInstance = new cloudinary.Cloudinary({
+    cloud_name: "dnkhiub4n", // Replace with your Cloudinary cloud name
+    api_key: "468266744748937", // Replace with your Cloudinary API key
+    api_secret: "Ngv99eg4xR2iL3LQEcJHo7tjibE", // Replace with your Cloudinary API secret
+  });
+
+  const handleFileInput = (file) => {
+    if (!file) return;
+    console.log(file);
+
+    console.log("About to upload the file");
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "dissertation-hub");
+    data.append("cloud_name", "dnkhiub4n");
+    fetch("https://api.cloudinary.com/v1_1/dnkhiub4n/raw/upload", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          console.log("Data returned");
+          setPublications([
+            ...publications,
+            { cloudinaryLink: data.url.toString(), title: publicationName },
+          ]);
+          console.log(publications);
+          console.log(data.url.toString());
+          setPublicationName("");
+
+          const cloudinaryUrl = data.url.toString();
+
+          // Regular expression to extract the public ID
+          const regex = /\/v\d+\/([^/]+)\.\w+/;
+
+          // Match the regular expression against the URL
+          const matches = cloudinaryUrl.match(regex);
+
+          // Extract the public ID from the matched result
+          if (matches && matches.length > 1) {
+            const publicId = matches[1];
+            console.log("Public ID:", publicId);
+          } else {
+            console.error("Public ID not found in the URL.");
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const submitHandler = async () => {
     setLoading(true);
@@ -75,6 +131,7 @@ export function SignUp() {
           department,
           role,
           fieldOfInterest,
+          publications,
         }),
       });
 
@@ -321,22 +378,6 @@ export function SignUp() {
                 <form class="space-y-4 md:space-y-6" action="#">
                   <div>
                     <label
-                      for="publication"
-                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Publications
-                    </label>
-                    <input
-                      type="text"
-                      name="publication"
-                      id="publication"
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-600 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
-                      placeholder="Publication Details"
-                      required=""
-                    />
-                  </div>
-                  <div>
-                    <label
                       for="countries"
                       class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
@@ -377,6 +418,37 @@ export function SignUp() {
                       required=""
                     />
                   </div>
+
+                  <div>
+                    <label
+                      for="publicationTitle"
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Publication Details
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(e) => setPublicationName(e.target.value)}
+                      name="publicationTitle"
+                      id="publicationTitle"
+                      placeholder="Publication Title"
+                      class="focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                      required=""
+                    />
+                  </div>
+
+                  <label
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    for="file_input"
+                  >
+                    Upload file
+                  </label>
+                  <input
+                    onClick={(e) => handleFileInput(e.target.files[0])}
+                    class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                    id="file_input"
+                    type="file"
+                  />
 
                   <div className="flex items-center justify-start space-x-3">
                     <button
