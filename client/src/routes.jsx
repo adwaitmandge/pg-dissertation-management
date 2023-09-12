@@ -17,6 +17,7 @@ import Room from "./pages/dashboard/room"
 import Videocall from "./pages/dashboard/videocall"
 import Chatbot from "./pages/dashboard/chatbot";
 import Summary from "./pages/dashboard/summarybot";
+import Scibot from "./pages/dashboard/scibot";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -84,6 +85,12 @@ export const routes = [
         name: "Summarization",
         path: "/summary",
         element: <Summary />,
+      },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "Science Bot",
+        path: "/scibot",
+        element: <Scibot />,
       },
     ],
   },
