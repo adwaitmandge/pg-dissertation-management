@@ -25,7 +25,7 @@ function Scibot() {
       return { role: role, content: messageObject.message}
     });
 
-    const apiUrl = 'http://0.0.0.0:8000/answer';
+    const apiUrl = 'http://localhost:8000/answer';
 
     const headers = {
       'Content-Type': 'application/json',

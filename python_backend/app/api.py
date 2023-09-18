@@ -19,8 +19,8 @@ app.add_middleware(
 )
 
 cookie_dict = {
-    "__Secure-1PSID": "awj3O3-qROYdly095wA3jU1FPiSeqPdsDyBLqVokXfc2GdhdZKOdyTxNe6pcK55zwI5z5Q.",
-    "__Secure-1PSIDTS": "sidts-CjEBSAxbGQMwxeQvXWOcKdKGyrcYk581RFnNPMXo0Yq2NXUo3NraHHgYd5-1TMdjiqNoEAA",
+    "__Secure-1PSID": "awj5L2QnJD76tAC22YboOxZxPf45BWtAFzrvqQHMp16wp5hMyuAraFDqTRaHo_oLLZZFcg.",
+    "__Secure-1PSIDTS": "sidts-CjIB3e41hTU67T1y9KT34kcsiEnApq-ZiV-u6oVjuKWZGm75AGSc7zEwqhNJMBZNT9aAVRAA",
     # Any cookie values you want to pass as a session object.
 }
 

@@ -80,12 +80,12 @@ export const routes = [
         path: "mentor/:id",
         element: <MentorMonitor />,
       },
-      {
-        icon: <ClipboardDocumentListIcon {...icon} />,
-        name: "tasks",
-        path: "student",
-        element: <StudentTasks />,
-      },
+      // {
+      //   icon: <ClipboardDocumentListIcon {...icon} />,
+      //   name: "tasks",
+      //   path: "student",
+      //   element: <StudentTasks />,
+      // },
       {
         icon: <VideoCameraIcon {...icon} />,
         name: "Video Call",
