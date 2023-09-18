@@ -3,6 +3,7 @@ import { Avatar } from "@chakra-ui/avatar";
 import { Box, Text } from "@chakra-ui/layout";
 
 const UserListItem = ({ user, handleFunction }) => {
+  console.log("Cliked");
   return (
     <Box
       className="mb-2 flex w-[100%] cursor-pointer items-center rounded-lg bg-[#e8e8e8] px-3 py-2 text-black hover:bg-[#38b2ac] hover:text-white"

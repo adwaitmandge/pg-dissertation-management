@@ -101,6 +101,7 @@ const authUser = asyncHandler(async (req, res) => {
       role: user.role,
       thesis: user.thesis,
       description: user.description,
+      connections: user.connections,
       token: generateToken(user._id),
     });
   } else {

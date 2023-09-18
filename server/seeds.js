@@ -1,8 +1,10 @@
 // // const cloudinary = require("cloudinary").v2;
 // // const fs = require("fs");
 
+const { default: mongoose } = require("mongoose");
 const PendingWork = require("./models/pendingThesisModel");
 const User = require("./models/userModel");
+const Connection = require("./models/connectionsModel");
 
 // // // Configure Cloudinary with your credentials
 // // cloudinary.config({
@@ -102,9 +104,23 @@ const User = require("./models/userModel");
 //     console.log("Response:", error.response.data);
 //   });
 
+mongoose
+  .connect("mongodb://127.0.0.1:27017/dissertationHub")
+  .then(() => {
+    console.log("Connected to MONGODB successfully");
+  })
+  .catch((err) => {
+    console.log("Couldn't connect to db");
+    console.log(err);
+  });
+
 const updateDescription = async () => {
-  const userExists = await User.find({ email: "adwaitmandge@gmail.com" });
-  console.log(userExists);
+  const allConnections = await Connection.find();
+  const reqUser = "64fd6b2dcf1cf3420c0038bf";
+  const result = allConnections.filter(
+    (connection) => connection.from == reqUser
+  );
+  console.log(result);
 };
 
 updateDescription();

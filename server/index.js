@@ -11,17 +11,13 @@ const messageRoutes = require("./routes/messageRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const mentorRoutes = require("./routes/mentorRoutes");
 const thesisRoutes = require("./routes/thesisRoutes");
+const connectionRoutes = require("./routes/connectionRoutes");
 
 const { default: mongoose } = require("mongoose");
 // const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 // const File = require("./models/fileModal");
 mongoose
-<<<<<<< HEAD
-.connect("mongodb://127.0.0.1:27017/dissertationHub")
-
-=======
   .connect("mongodb://127.0.0.1:27017/dissertationHub")
->>>>>>> 53416772b369dfc52bee5d5d69cee936c8a7d63a
   .then(() => {
     console.log("Connected to MONGODB successfully");
   })
@@ -40,6 +36,7 @@ app.use("/api/message", messageRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/mentor", mentorRoutes);
 app.use("/api/thesis", thesisRoutes);
+app.use("/api/connections", connectionRoutes);
 
 // app.use(notFound);
 // app.use(errorHandler);

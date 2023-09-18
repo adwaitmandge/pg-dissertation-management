@@ -103,6 +103,26 @@ const userSchema = new mongoose.Schema(
         ],
       },
     ],
+    connections: {
+      type: [
+        {
+          from: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+          },
+          to: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+          },
+          status: {
+            type: String,
+            enum: ["Pending", "Accepted", "Rejected"],
+            default: "Pending",
+          },
+        },
+      ],
+      default: [],
+    },
     description: {
       type: String,
       default:

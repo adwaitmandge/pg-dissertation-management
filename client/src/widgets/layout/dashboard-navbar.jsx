@@ -1,4 +1,4 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import {
   Navbar,
   Typography,
@@ -39,9 +39,11 @@ export function DashboardNavbar() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
+  const [showResults, setshowResults] = useState(false);
 
   const { user } = UserState();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSearch = async (query) => {
     console.log("Inside handle search");
@@ -69,7 +71,7 @@ export function DashboardNavbar() {
 
       console.log(query);
       const { data } = await axios.get(
-        `http://localhost:5000/api/user?search=${search}`,
+        `http://localhost:5000/api/user?search=${query}`,
         config
       );
 
@@ -130,24 +132,45 @@ export function DashboardNavbar() {
         <div className="flex items-center">
           <div className="mr-auto flex-1 md:mr-4 md:w-56">
             <Input
+              onClick={() => setshowResults(!showResults)}
               onChange={(e) => {
                 handleSearch(e.target.value);
               }}
               className="mr-3"
               label="Search Users"
             />
+            {loading ? (
+              <div>Loading</div>
+            ) : (
+              <div
+                className={`absolute z-50 rounded-3xl bg-white ${
+                  showResults ? "" : "hidden"
+                } p-4 shadow-lg`}
+              >
+                {searchResult?.map((user, index) => {
+                  if (index <= 5)
+                    return (
+                      <div
+                        onClick={() => {
+                          console.log("I am", user);
+                          navigate(`/dashboard/profile/${user._id}`, {
+                            state: user,
+                          });
+                        }}
+                      >
+                        <UserListItem
+                          key={user._id}
+                          user={user}
+                          onClick={() => {
+                            console.log("Clicked");
+                          }}
+                        />
+                      </div>
+                    );
+                })}
+              </div>
+            )}
           </div>
-          {loading ? (
-            <div>Loading</div>
-          ) : (
-            searchResult?.map((user) => (
-              <UserListItem
-                key={user._id}
-                user={user}
-                handleFunction={() => accessChat(user._id)}
-              />
-            ))
-          )}
           <IconButton
             variant="text"
             color="blue-gray"

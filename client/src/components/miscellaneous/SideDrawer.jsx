@@ -94,7 +94,7 @@ const SideDrawer = () => {
       const { data } = await axios.get(
         `http://localhost:5000/api/user?search=${search}`,
         config
-      );
+      );r
 
       console.log(data);
       setLoading(false);

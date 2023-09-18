@@ -6,10 +6,13 @@ import {
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
   ClipboardIcon,
+  ClipboardDocumentIcon,
   ChatBubbleLeftRightIcon,
   VideoCameraIcon,
   ArrowLeftOnRectangleIcon,
   ClipboardDocumentListIcon,
+  BookOpenIcon,
+  SignalIcon,
 } from "@heroicons/react/24/solid";
 
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
@@ -25,6 +28,8 @@ import ThesisUpload from "./pages/dashboard/thesisUpload";
 import ThesisPreview from "./pages/dashboard/thesisPreview";
 
 import Scibot from "./pages/dashboard/scibot";
+import PendingConnections from "./pages/dashboard/pendingConnections";
+import ConnectionProfile from "./pages/dashboard/connectionProfile";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -44,6 +49,18 @@ export const routes = [
         name: "profile",
         path: "profile",
         element: <Profile />,
+      },
+      {
+        icon: <UserCircleIcon {...icon} />,
+        name: "connection",
+        path: "/profile/:id",
+        element: <ConnectionProfile />,
+      },
+      {
+        icon: <SignalIcon {...icon} />,
+        name: "Connection",
+        path: "/connection",
+        element: <PendingConnections />,
       },
       {
         icon: <TableCellsIcon {...icon} />,
@@ -94,7 +111,7 @@ export const routes = [
         element: <Summary />,
       },
       {
-        icon: <ClipboardDocumentListIcon {...icon} />,
+        icon: <ClipboardDocumentIcon {...icon} />,
         name: "Upload Files",
         path: "thesisupload",
         element: <ThesisUpload />,
@@ -106,11 +123,11 @@ export const routes = [
         element: <ThesisPreview />,
       },
       {
-        icon: <BellIcon {...icon} />,
+        icon: <BookOpenIcon {...icon} />,
         name: "Science Bot",
         path: "scibot",
         element: <Scibot />,
-      }
+      },
       // {
       //   icon: <ChatBubbleLeftRightIcon {...icon} />,
       //   name: "chat",
