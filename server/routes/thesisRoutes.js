@@ -5,7 +5,7 @@ const {
   fetchAllThesis,
   firstSubmission,
   fetchNotifications,
-  updateFeedback,
+  updateFeedback,fetchMyThesis
 } = require("../controllers/thesisControllers");
 const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -15,6 +15,7 @@ router.post("/summarize", summarize);
 router.post("/submitThesis", protect, firstSubmission);
 router.get("/", protect, fetchAllThesis);
 router.get("/thesis-notifications", protect, fetchNotifications);
-router.post("/feedback", updateFeedback);
+router.post("/feedback",updateFeedback);
+router.get("/getfeedback",protect, fetchMyThesis);
 
 module.exports = router;

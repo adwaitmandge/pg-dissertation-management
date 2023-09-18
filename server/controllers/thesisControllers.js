@@ -134,6 +134,15 @@ const fetchAllThesis = async (req, res) => {
     console.error(err.message);
   }
 };
+const fetchMyThesis = async (req, res) => {
+  try {
+    const thes = await PendingThesis.find({student: req.user._id });
+    console.log(thes);
+    res.json(thes);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
 const firstSubmission = async (req, res) => {
   try {
@@ -204,4 +213,5 @@ module.exports = {
   firstSubmission,
   fetchNotifications,
   updateFeedback,
+  fetchMyThesis
 };

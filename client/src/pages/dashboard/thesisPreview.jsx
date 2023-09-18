@@ -13,6 +13,7 @@ import { useLocation } from "react-router-dom";
 import DocViewer, { PDFRenderer, DocViewerRenderers } from "react-doc-viewer";
 import PizZip from "pizzip";
 import { DOMParser } from "@xmldom/xmldom";
+import { UserState } from "@/context/UserProvider";
 
 function ThesisPreview() {
   const [messages, setMessages] = useState([]);
@@ -23,7 +24,7 @@ function ThesisPreview() {
   const [text, setText] = useState("");
   const [result, setResult] = useState();
   const [feedback, setFeedback] = useState("");
-
+  const { user } = UserState();
   const location = useLocation();
   const { thesis } = location.state;
   console.log(thesis);
@@ -158,7 +159,7 @@ function ThesisPreview() {
           documents={docs}
         />
       </div>
-      <button
+{user?.role=="Mentor" && <button
         onClick={() =>
           onUrlUpload(
             "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx"
@@ -168,7 +169,8 @@ function ThesisPreview() {
         class="mr-2 mt-3 mb-2 inline-flex h-12 w-[100%] items-center justify-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-lg font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
       >
         Plagiarism Detector
-      </button>
+      </button>}
+      
       {result && (
         <div>
           <h3>Plagiarism Check Result</h3>
@@ -194,6 +196,9 @@ function ThesisPreview() {
           )}
         </div>
       )}
+      <>
+      {user?.role=="Mentor" &&
+      <>
       <button
         onClick={() => sendFeeback("Accept")}
         type="button"
@@ -208,7 +213,8 @@ function ThesisPreview() {
       >
         Reject
       </button>
-      <input type="text" onChange={(e) => setFeedback(e.target.value)} />
+      <input type="text" onChange={(e) => setFeedback(e.target.value)} /></>
+      }</>
     </div>
   );
 }
