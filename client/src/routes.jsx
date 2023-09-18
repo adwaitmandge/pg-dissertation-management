@@ -45,12 +45,12 @@ export const routes = [
         path: "profile",
         element: <Profile />,
       },
-      {
-        icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "tables",
-        element: <Tables />,
-      },
+      // {
+      //   icon: <TableCellsIcon {...icon} />,
+      //   name: "tables",
+      //   path: "tables",
+      //   element: <Tables />,
+      // },
       {
         icon: <BellIcon {...icon} />,
         name: "notifications",
@@ -63,12 +63,12 @@ export const routes = [
         path: "mentor/:id",
         element: <MentorMonitor />,
       },
-      {
-        icon: <ClipboardDocumentListIcon {...icon} />,
-        name: "tasks",
-        path: "student",
-        element: <StudentTasks />,
-      },
+      // {
+      //   icon: <ClipboardDocumentListIcon {...icon} />,
+      //   name: "tasks",
+      //   path: "student",
+      //   element: <StudentTasks />,
+      // },
       {
         icon: <VideoCameraIcon {...icon} />,
         name: "Video Call",

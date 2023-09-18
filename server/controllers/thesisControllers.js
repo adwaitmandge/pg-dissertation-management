@@ -145,7 +145,7 @@ const firstSubmission = async (req, res) => {
     const pendingThesis = await PendingThesis.create({
       cloudinaryLink: publications[0].cloudinaryLink,
       student: req.user._id,
-      mentor: "6505354edb5015030833fe2b",
+      mentor: "65085b05d2c40c0d85800534",
     });
 
     console.log(pendingThesis);
