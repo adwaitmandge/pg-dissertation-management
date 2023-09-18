@@ -33,7 +33,7 @@ import {
 
 import ProfileModal from "./ProfileModal";
 import { useDisclosure } from "@chakra-ui/hooks";
-import ChatLoading from "../chatLoading";
+// import ChatLoading from "../chatLoading";
 import axios from "axios";
 import UserListItem from "../UserAvatar/UserListItem";
 import { getSender } from "../../config/ChatLogics";

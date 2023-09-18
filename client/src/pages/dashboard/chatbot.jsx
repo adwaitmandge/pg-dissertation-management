@@ -116,9 +116,9 @@ function Chatbot() {
 
   return (
     <div className="App">
-      <div style={{ position:"relative", height: "800px", width: "700px"  }}>
+      <div style={{ display:"grid",  gridTemplateColumns: "2fr 1fr 1fr"  }}>
         <MainContainer>
-          <ChatContainer>       
+          <ChatContainer style={{height:"700px"}}>       
             <MessageList 
               scrollBehavior="smooth" 
               typingIndicator={isTyping ? <TypingIndicator content="Typing" /> : null}

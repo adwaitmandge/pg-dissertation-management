@@ -16,7 +16,12 @@ const { default: mongoose } = require("mongoose");
 // const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 // const File = require("./models/fileModal");
 mongoose
+<<<<<<< HEAD
+.connect("mongodb://127.0.0.1:27017/dissertationHub")
+
+=======
   .connect("mongodb://127.0.0.1:27017/dissertationHub")
+>>>>>>> 53416772b369dfc52bee5d5d69cee936c8a7d63a
   .then(() => {
     console.log("Connected to MONGODB successfully");
   })

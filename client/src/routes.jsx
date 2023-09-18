@@ -24,6 +24,7 @@ import Summary from "./pages/dashboard/summarybot";
 import ThesisUpload from "./pages/dashboard/thesisUpload";
 import ThesisPreview from "./pages/dashboard/thesisPreview";
 
+import Scibot from "./pages/dashboard/scibot";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -104,6 +105,12 @@ export const routes = [
         path: "/preview/thesis/:id",
         element: <ThesisPreview />,
       },
+      {
+        icon: <BellIcon {...icon} />,
+        name: "Science Bot",
+        path: "scibot",
+        element: <Scibot />,
+      }
       // {
       //   icon: <ChatBubbleLeftRightIcon {...icon} />,
       //   name: "chat",
