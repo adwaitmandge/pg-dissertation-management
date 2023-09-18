@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
+import { useToast } from "@chakra-ui/react";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
@@ -18,11 +19,22 @@ export function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const toast = useToast();
 
   const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
       console.log("Missing Credentials");
+      toast({
+        title: "Missing Credentials",
+        description: "Please fill out all the fields",
+        status: "error",
+        position: "top-right",
+        duration: 2000,
+        isClosable: true,
+      });
+      setLoading(false);
+      return;
     }
 
     try {
@@ -41,9 +53,28 @@ export function SignIn() {
       const data = await res.json();
       localStorage.setItem("userInfo", JSON.stringify(data));
 
+      setTimeout(() => {
+        toast({
+          title: "Login Succesful!",
+          description: "You have been authenticated",
+          status: "success",
+          position: "top-right",
+          duration: 4000,
+          isClosable: true,
+        });
+      });
+
       navigate("/dashboard/home");
       console.log(data);
     } catch (err) {
+      toast({
+        title: "Invalid Credentials!",
+        description: "Email-ID or Password is incorrect",
+        status: "success",
+        position: "top-right",
+        duration: 4000,
+        isClosable: true,
+      });
       setLoading(false);
       console.error(err.message);
     }

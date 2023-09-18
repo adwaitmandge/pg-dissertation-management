@@ -9,7 +9,7 @@ function App() {
       <Route path="/dashboard/*" element={<Dashboard />} />
       <Route path="/auth/*" element={<Auth />} />
       <Route path="/chat" element={<ChatPage />} />
-      <Route path="/" element={<Auth />} />
+      <Route path="/" element={<Navigate to="/dashboard/home" />} />
     </Routes>
   );
 }

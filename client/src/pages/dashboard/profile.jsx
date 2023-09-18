@@ -12,24 +12,53 @@ import {
   Tooltip,
   Button,
 } from "@material-tailwind/react";
+import DocViewer, { PDFRenderer, PNGRenderer } from "react-doc-viewer";
+
 import {
   HomeIcon,
   ChatBubbleLeftEllipsisIcon,
   Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "@/data";
 import { UserState } from "@/context/UserProvider";
 import { useEffect, useState } from "react";
+import { NavigateBeforeTwoTone } from "@mui/icons-material";
 
 export function Profile() {
   const { user } = UserState();
   const [allThesis, setAllThesis] = useState([]);
+  
+  const docs = [
+    {
+      uri: "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694840138/rb6qrhwvacosxwqrlies.pdf",
+    },
+  ];
+
+  const navigate = useNavigate();
+
+  const fetchThesis = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/thesis/", {
+        methods: "GET",
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+
+      const data = await res.json();
+      console.log(data.thesis);
+      setAllThesis(data.thesis);
+      // setDocs(data.thesis.map((thesis) => thesis.cloudinaryLink));
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   useEffect(() => {
-    setAllThesis(user?.thesis);
+    fetchThesis();
   }, [user]);
 
   console.log(user);
@@ -44,8 +73,8 @@ export function Profile() {
           <div className="mb-10 flex items-center justify-between gap-6">
             <div className="flex items-center gap-6">
               <Avatar
-                src="/img/bruce-mars.jpeg"
-                alt="bruce-mars"
+                src={`${user?.pic}`}
+                alt="Picture"
                 size="xl"
                 className="rounded-lg shadow-lg shadow-blue-gray-500/40"
               />
@@ -110,7 +139,7 @@ export function Profile() {
             </div>
             <ProfileInfoCard
               title="Profile Information"
-              description="Hi, I'm Alec Thompson, Decisions: If you can't decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+              description={`${user?.description}`}
               details={{
                 "first name": user?.name,
                 mobile: "(44) 123 1234 123",
@@ -161,10 +190,23 @@ export function Profile() {
             </Typography>
             <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
               {allThesis?.map(
-                ({ img, title, description, tag, route, members }) => {
+                ({
+                  img,
+                  title,
+                  description,
+                  tag,
+                  route,
+                  members,
+                  cloudinaryLink,
+                }) => {
                   console.log(title);
                   return (
                     <Card key={title} color="transparent" shadow={false}>
+                      <DocViewer
+                        documents={docs}
+                        pluginRenderers={[PDFRenderer]}
+                      />
+
                       {/* <CardHeader
                         floated={false}
                         color="gray"
@@ -180,13 +222,12 @@ export function Profile() {
                         <Typography
                           variant="small"
                           className="font-normal text-blue-gray-500"
-                        >
-                          {tag}
-                        </Typography>
+                        ></Typography>
                         <Typography
                           variant="h5"
                           color="blue-gray"
                           className="mt-1 mb-2"
+                          onClick={() => navigate(`${cloudinaryLink}`)}
                         >
                           {title}
                         </Typography>

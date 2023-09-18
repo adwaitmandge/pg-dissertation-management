@@ -10,7 +10,7 @@ const messageRoutes = require("./routes/messageRoutes");
 // const uploadRoutes = require("./routes/uploadRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const mentorRoutes = require("./routes/mentorRoutes");
-// const thesisRoutes = require("./routes/thesisRoutes");
+const thesisRoutes = require("./routes/thesisRoutes");
 
 const { default: mongoose } = require("mongoose");
 // const { notFound, errorHandler } = require("./middleware/errorMiddleware");
@@ -34,7 +34,7 @@ app.use("/api/message", messageRoutes);
 // app.use("/api/uploads", uploadRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/mentor", mentorRoutes);
-// app.use("/api/thesis", thesisRoutes);
+app.use("/api/thesis", thesisRoutes);
 
 // app.use(notFound);
 // app.use(errorHandler);

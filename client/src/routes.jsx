@@ -21,6 +21,9 @@ import Room from "./pages/dashboard/room";
 import Videocall from "./pages/dashboard/videocall";
 import Chatbot from "./pages/dashboard/chatbot";
 import Summary from "./pages/dashboard/summarybot";
+import ThesisUpload from "./pages/dashboard/thesisUpload";
+import ThesisPreview from "./pages/dashboard/thesisPreview";
+
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -50,25 +53,25 @@ export const routes = [
       {
         icon: <BellIcon {...icon} />,
         name: "notifications",
-        path: "notifications",
+        path: "mentor-notifications",
         element: <Notifications />,
       },
       {
         icon: <BellIcon {...icon} />,
         name: "user-details",
-        path: "/mentor/:id",
+        path: "mentor/:id",
         element: <MentorMonitor />,
       },
       {
         icon: <ClipboardDocumentListIcon {...icon} />,
         name: "tasks",
-        path: "/student",
+        path: "student",
         element: <StudentTasks />,
       },
       {
         icon: <VideoCameraIcon {...icon} />,
         name: "Video Call",
-        path: "/videocall",
+        path: "videocall",
         element: <Videocall />,
       },
       {
@@ -80,14 +83,26 @@ export const routes = [
       {
         icon: <ClipboardIcon {...icon} />,
         name: "DocGPT",
-        path: "/chatbot",
+        path: "chatbot",
         element: <Chatbot />,
       },
       {
         icon: <ClipboardDocumentListIcon {...icon} />,
         name: "Summarization",
-        path: "/summary",
+        path: "summary",
         element: <Summary />,
+      },
+      {
+        icon: <ClipboardDocumentListIcon {...icon} />,
+        name: "Upload Files",
+        path: "thesisupload",
+        element: <ThesisUpload />,
+      },
+      {
+        icon: <VideoCameraIcon {...icon} />,
+        name: "preview",
+        path: "/preview/thesis/:id",
+        element: <ThesisPreview />,
       },
       // {
       //   icon: <ChatBubbleLeftRightIcon {...icon} />,

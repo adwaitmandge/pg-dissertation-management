@@ -103,6 +103,11 @@ const userSchema = new mongoose.Schema(
         ],
       },
     ],
+    description: {
+      type: String,
+      default:
+        "I am a tech professional who designs and builds websites, ensuring they function smoothly and look appealing. I use programming languages like HTML, CSS, and JavaScript to create user-friendly and responsive web applications. Web developers play a crucial role in bringing digital ideas to life on the internet",
+    },
   },
   {
     timestamps: true,

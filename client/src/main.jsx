@@ -23,11 +23,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <UserProvider>
       <ThemeProvider>
-        <ChakraProvider>
-          <MaterialTailwindControllerProvider>
+        <MaterialTailwindControllerProvider>
+          <ChakraProvider>
             <App />
-          </MaterialTailwindControllerProvider>
-        </ChakraProvider>
+          </ChakraProvider>
+        </MaterialTailwindControllerProvider>
       </ThemeProvider>
     </UserProvider>
   </BrowserRouter>

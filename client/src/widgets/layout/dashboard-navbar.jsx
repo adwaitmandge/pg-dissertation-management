@@ -25,12 +25,68 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
-
+import { useState } from "react";
+import { useToast } from "@chakra-ui/react";
+import { UserState } from "@/context/UserProvider";
+import ChatLoading from "@/components/ChatLoading";
+import UserListItem from "@/components/UserAvatar/UserListItem";
+import axios from "axios";
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
+
+  const { user } = UserState();
+  const { toast } = useToast();
+
+  const handleSearch = async (query) => {
+    console.log("Inside handle search");
+    console.log("The user is", user);
+
+    if (!query) {
+      // toast({
+      //   title: "Please Enter something in search",
+      //   status: "warning",
+      //   duration: 5000,
+      //   isClosable: true,
+      //   position: "top-left",
+      // });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      };
+
+      console.log(query);
+      const { data } = await axios.get(
+        `http://localhost:5000/api/user?search=${search}`,
+        config
+      );
+
+      console.log(data);
+      setLoading(false);
+      setSearchResult(data);
+    } catch (error) {
+      // toast({
+      //   title: "Error Occured!",
+      //   description: "Failed to Load the Search Results",
+      //   status: "error",
+      //   duration: 5000,
+      //   isClosable: true,
+      //   position: "bottom-left",
+      // });
+    }
+  };
 
   return (
     <Navbar
@@ -72,9 +128,26 @@ export function DashboardNavbar() {
           </Typography>
         </div>
         <div className="flex items-center">
-          <div className="mr-auto md:mr-4 md:w-56">
-            <Input label="Type here" />
+          <div className="mr-auto flex-1 md:mr-4 md:w-56">
+            <Input
+              onChange={(e) => {
+                handleSearch(e.target.value);
+              }}
+              className="mr-3"
+              label="Search Users"
+            />
           </div>
+          {loading ? (
+            <div>Loading</div>
+          ) : (
+            searchResult?.map((user) => (
+              <UserListItem
+                key={user._id}
+                user={user}
+                handleFunction={() => accessChat(user._id)}
+              />
+            ))
+          )}
           <IconButton
             variant="text"
             color="blue-gray"

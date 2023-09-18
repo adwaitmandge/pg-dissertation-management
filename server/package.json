@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.40.0",
@@ -9,6 +10,8 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.0",
+    "pdf-creator-node": "^2.3.5",
+    "pdf-lib": "^1.17.1",
     "socket.io": "^4.7.2"
   }
 }

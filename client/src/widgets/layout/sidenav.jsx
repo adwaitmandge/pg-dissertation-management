@@ -73,7 +73,9 @@ export function Sidenav({ brandImg, brandName, routes }) {
                 if (
                   name != "user-details" &&
                   !(user?.role == "Mentor" && name == "tasks") &&
-                  name != "vcRoom"
+                  name != "vcRoom" &&
+                  !(name == "Upload Files" && user?.role == "Mentor") &&
+                  name != "preview"
                 )
                   return (
                     <li

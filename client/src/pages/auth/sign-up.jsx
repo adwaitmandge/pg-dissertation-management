@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Card,
   CardHeader,
@@ -15,6 +16,9 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { useState } from "react";
 import cloudinary from "cloudinary-core";
+import FileUploadComponent from "../dashboard/fileupload";
+import { StepDescription } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 
 const steps = ["Personal Details", "Qualification", "Publications"];
 
@@ -24,73 +28,74 @@ export function SignUp() {
   const [showPersonalDetailsPanel, setShowPersonalDetailsPanel] =
     useState(true);
   const [showPublicationsPanel, setShowPublicationsPanel] = useState(false);
+  const [showDescriptionPanel, setShowDescriptionPanel] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [university, setUniversity] = useState("");
   const [department, setDepartment] = useState("");
   const [fieldOfInterest, setFieldOfInterest] = useState("");
   const [role, setRole] = useState("");
   const [publications, setPublications] = useState([]);
   const [publicationName, setPublicationName] = useState("");
-
+  const [file, setFile] = useState(null);
+  const [isFileUploadOpen, setIsFileUploadOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [fileLoading, setFileLoading] = useState(false);
+
   console.log(publications);
   const navigate = useNavigate();
+  const toast = useToast();
 
-  const cloudinaryInstance = new cloudinary.Cloudinary({
-    cloud_name: "dnkhiub4n", // Replace with your Cloudinary cloud name
-    api_key: "468266744748937", // Replace with your Cloudinary API key
-    api_secret: "Ngv99eg4xR2iL3LQEcJHo7tjibE", // Replace with your Cloudinary API secret
-  });
+  // const cloudinaryInstance = new cloudinary.Cloudinary({
+  //   cloud_name: "dnkhiub4n", // Replace with your Cloudinary cloud name
+  //   api_key: "468266744748937", // Replace with your Cloudinary API key
+  //   api_secret: "Ngv99eg4xR2iL3LQEcJHo7tjibE", // Replace with your Cloudinary API secret
+  // });
 
-  const handleFileInput = (file) => {
-    if (!file) return;
-    console.log(file);
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    console.log(selectedFile);
+    setFile(selectedFile);
+  };
 
-    console.log("About to upload the file");
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "dissertation-hub");
-    data.append("cloud_name", "dnkhiub4n");
-    fetch("https://api.cloudinary.com/v1_1/dnkhiub4n/raw/upload", {
-      method: "POST",
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          console.log("Data returned");
-          setPublications([
-            ...publications,
-            { cloudinaryLink: data.url.toString(), title: publicationName },
-          ]);
-          console.log(publications);
-          console.log(data.url.toString());
-          setPublicationName("");
+  const uploadFileToCloudinary = async () => {
+    if (!file) {
+      console.error("No file selected.");
+      return;
+    }
 
-          const cloudinaryUrl = data.url.toString();
+    setFileLoading(true);
+    // Create a FormData object to send the file to Cloudinary
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "hfcakj4l"); // Replace with your Cloudinary upload preset
+    formData.append("resource_type", "raw"); // Set the resource_type to 'raw'
 
-          // Regular expression to extract the public ID
-          const regex = /\/v\d+\/([^/]+)\.\w+/;
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dralpqhoq/raw/upload",
+        formData
+      );
 
-          // Match the regular expression against the URL
-          const matches = cloudinaryUrl.match(regex);
-
-          // Extract the public ID from the matched result
-          if (matches && matches.length > 1) {
-            const publicId = matches[1];
-            console.log("Public ID:", publicId);
-          } else {
-            console.error("Public ID not found in the URL.");
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      if (response.data.secure_url) {
+        console.log("File uploaded to Cloudinary:", response.data.secure_url);
+        setPublications([
+          ...publications,
+          { cloudinaryLink: response.data.secure_url, title: publicationName },
+        ]);
+        console.log(publications);
+        setPublicationName("");
+        setFileLoading(false);
+      } else {
+        console.error("Cloudinary upload failed.");
+      }
+    } catch (error) {
+      console.error("Error uploading file to Cloudinary:", error);
+    }
   };
 
   const submitHandler = async () => {
@@ -103,20 +108,19 @@ export function SignUp() {
       !university ||
       !department ||
       !role ||
-      !fieldOfInterest
+      !fieldOfInterest ||
+      !description
     ) {
       console.log("Missing Credentials");
+      toast({
+        title: "Missing Credentials",
+        description: "Please fill out all the fields",
+        status: "error",
+        position: "top-right",
+        duration: 4000,
+        isClosable: true,
+      });
     }
-
-    const body = {
-      name,
-      email,
-      password,
-      university,
-      department,
-      role,
-      fieldOfInterest,
-    };
 
     try {
       console.log("About to send request");
@@ -132,6 +136,7 @@ export function SignUp() {
           role,
           fieldOfInterest,
           publications,
+          description,
         }),
       });
 
@@ -140,9 +145,29 @@ export function SignUp() {
       const data = await res.json();
       localStorage.setItem("userInfo", JSON.stringify(data));
 
-      navigate("/dashboard/home");
+      toast({
+        title: "Account Created",
+        description: "We have created the account for you",
+        status: "success",
+        position: "top-right",
+        duration: 4000,
+        isClosable: true,
+      });
+
+      setTimeout(() => {
+        navigate("/dashboard/home");
+      }, 3000);
+
       console.log(data);
     } catch (err) {
+      toast({
+        title: "Error occurred",
+        description: "Please try again.",
+        status: "error",
+        position: "top-right",
+        duration: 4000,
+        isClosable: true,
+      });
       console.error(err.message);
     }
   };
@@ -164,7 +189,7 @@ export function SignUp() {
           </a> */}
           {showPersonalDetailsPanel && (
             <div class="w-[100%] rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
-              <Box className="mt-3 w-[100%] overflow-hidden px-2 pt-3">
+              {/* <Box className="mt-3 w-[100%] overflow-hidden px-2 pt-3">
                 <Stepper activeStep={stepLabel} alternativeLabel>
                   {steps.map((label) => (
                     <Step key={label}>
@@ -172,7 +197,7 @@ export function SignUp() {
                     </Step>
                   ))}
                 </Stepper>
-              </Box>
+              </Box> */}
               <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
                   Create an Account
@@ -256,7 +281,7 @@ export function SignUp() {
 
           {showQualificationsPanel && (
             <div class="w-[100%] rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
-              <Box className="mt-3 w-[100%] overflow-hidden px-2 pt-3">
+              {/* <Box className="mt-3 w-[100%] overflow-hidden px-2 pt-3">
                 <Stepper activeStep={stepLabel} alternativeLabel>
                   {steps.map((label) => (
                     <Step key={label}>
@@ -264,7 +289,7 @@ export function SignUp() {
                     </Step>
                   ))}
                 </Stepper>
-              </Box>
+              </Box> */}
               <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
                   Create an Account
@@ -287,6 +312,79 @@ export function SignUp() {
                       required=""
                     />
                   </div>
+                  <div>
+                    <label
+                      for="fullname"
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Description
+                    </label>
+                    <textarea
+                      type="text"
+                      name="fullname"
+                      onChange={(e) => setDescription(e.target.value)}
+                      id="fullname"
+                      className="block h-40 w-full resize-none rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-600 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+                      placeholder="Describe yourself...."
+                      required=""
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-start space-x-3">
+                    <button
+                      onClick={() => {
+                        setStepLabel(stepLabel - 1);
+                        setShowQualificationPanel(false);
+                        setShowPersonalDetailsPanel(true);
+                      }}
+                      type="button"
+                      class="w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      Back
+                    </button>
+                    <button
+                      onClick={() => {
+                        setStepLabel(stepLabel + 1);
+                        setShowQualificationPanel(false);
+                        setShowPublicationsPanel(false);
+                        setShowDescriptionPanel(true);
+                      }}
+                      type="button"
+                      class="w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      Next
+                    </button>
+                  </div>
+                  <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                    Already have an account yet?{" "}
+                    <a
+                      href="/auth/sign-in"
+                      class="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                    >
+                      Sign in
+                    </a>
+                  </p>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {showDescriptionPanel && (
+            <div class="w-[100%] rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
+              {/* <Box className="mt-3 w-[100%] overflow-hidden px-2 pt-3">
+                <Stepper activeStep={stepLabel} alternativeLabel>
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Box> */}
+              <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+                  Create an Account
+                </h1>
+                <form class="space-y-4 md:space-y-6" action="#">
                   <div>
                     <label
                       for="university"
@@ -321,12 +419,29 @@ export function SignUp() {
                       required=""
                     />
                   </div>
+                  <div>
+                    <label
+                      for="countries"
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Select a role
+                    </label>
+                    <select
+                      id="countries"
+                      onChange={(e) => setRole(e.target.value)}
+                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    >
+                      <option value="Student">Student</option>
+                      <option value="Mentor">Mentor</option>
+                    </select>
+                  </div>
 
                   <div className="flex items-center justify-start space-x-3">
                     <button
                       onClick={() => {
                         setStepLabel(stepLabel - 1);
                         setShowQualificationPanel(false);
+                        setShowDescriptionPanel(false);
                         setShowPersonalDetailsPanel(true);
                       }}
                       type="button"
@@ -338,6 +453,7 @@ export function SignUp() {
                       onClick={() => {
                         setStepLabel(stepLabel + 1);
                         setShowQualificationPanel(false);
+                        setShowDescriptionPanel(false);
                         setShowPublicationsPanel(true);
                       }}
                       type="button"
@@ -362,7 +478,7 @@ export function SignUp() {
 
           {showPublicationsPanel && (
             <div class="w-[100%] rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
-              <Box className="mt-3 w-[100%] overflow-hidden px-2 pt-3">
+              {/* <Box className="mt-3 w-[100%] overflow-hidden px-2 pt-3">
                 <Stepper activeStep={stepLabel} alternativeLabel>
                   {steps.map((label) => (
                     <Step key={label}>
@@ -370,28 +486,12 @@ export function SignUp() {
                     </Step>
                   ))}
                 </Stepper>
-              </Box>
+              </Box> */}
               <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
                   Create an Account
                 </h1>
                 <form class="space-y-4 md:space-y-6" action="#">
-                  <div>
-                    <label
-                      for="countries"
-                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Select a role
-                    </label>
-                    <select
-                      id="countries"
-                      onChange={(e) => setRole(e.target.value)}
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    >
-                      <option value="Student">Student</option>
-                      <option value="Mentor">Mentor</option>
-                    </select>
-                  </div>
                   <div>
                     <label
                       for="dep"
@@ -437,18 +537,61 @@ export function SignUp() {
                     />
                   </div>
 
-                  <label
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    for="file_input"
+                  <div>
+                    <label
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                      for="file_input"
+                    >
+                      Upload file
+                    </label>
+                    <input
+                      accept=".pdf, .docx"
+                      onChange={handleFileChange}
+                      class="-mb-5 block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                      id="file_input"
+                      type="file"
+                    />
+                  </div>
+                  {/* Button to open/close the FileUploadComponent */}
+                  {/* <button onClick={toggleFileUpload}>
+                        {isFileUploadOpen
+                          ? "Close File Upload"
+                          : "Open File Upload"}
+                      </button> */}
+                  {fileLoading ? (
+                    <li class="flex items-center">
+                      <div role="status">
+                        <svg
+                          aria-hidden="true"
+                          class="mr-2 h-4 w-4 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+                          viewBox="0 0 100 101"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor"
+                          />
+                          <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill"
+                          />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      Preparing your file
+                    </li>
+                  ) : (
+                    <div className=""></div>
+                  )}
+                  <button
+                    type="button"
+                    disabled={fileLoading}
+                    onClick={uploadFileToCloudinary}
+                    className="inline-flex w-[100%] items-center justify-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
                   >
-                    Upload file
-                  </label>
-                  <input
-                    onClick={(e) => handleFileInput(e.target.files[0])}
-                    class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
-                    id="file_input"
-                    type="file"
-                  />
+                    Upload
+                  </button>
 
                   <div className="flex items-center justify-start space-x-3">
                     <button

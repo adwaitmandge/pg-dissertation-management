@@ -6,6 +6,7 @@ const generateToken = require("../config/generateToken");
 //@route           GET /api/user?search=
 //@access          Public
 const allUsers = asyncHandler(async (req, res) => {
+  console.log("Inside all users");
   const keyword = req.query.search
     ? {
         $or: [
@@ -32,6 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
     department,
     university,
     publications,
+    description,
   } = req.body;
 
   console.log("Publications are", publications);
@@ -56,6 +58,7 @@ const registerUser = asyncHandler(async (req, res) => {
     role,
     university,
     department,
+    description,
     thesis: publications,
   });
 
@@ -69,6 +72,7 @@ const registerUser = asyncHandler(async (req, res) => {
       fieldOfInterest: user.fieldOfInterest,
       role: user.role,
       token: generateToken(user._id),
+      description: user.description,
     });
   } else {
     res.status(400);
@@ -96,6 +100,7 @@ const authUser = asyncHandler(async (req, res) => {
       fieldOfInterest: user.fieldOfInterest,
       role: user.role,
       thesis: user.thesis,
+      description: user.description,
       token: generateToken(user._id),
     });
   } else {
