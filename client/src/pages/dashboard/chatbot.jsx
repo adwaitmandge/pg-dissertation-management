@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState,useRef  } from 'react'
 // import './App.css'
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import axios from 'axios';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import FileUploadComponent from './fileupload';
-
+import "./chatbot.css";
 function Chatbot() {
   const [messages, setMessages] = useState([
     {
@@ -17,6 +17,42 @@ function Chatbot() {
   const [sourceId,setSourceId] = useState(null);
   const [isFileUploadOpen, setIsFileUploadOpen] = useState(false);
 
+  const [files, setFiles] = useState(null);
+  const inputRef = useRef();
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setFiles(event.dataTransfer.files)
+  };
+  
+  // send files to the server // learn from my other video
+  const handleUpload = () => {
+    const formData = new FormData();
+    formData.append("Files", files);
+    console.log(formData.getAll())
+    // fetch(
+    //   "link", {
+    //     method: "POST",
+    //     body: formData
+    //   }  
+    // )
+  };
+
+  if (files) return (
+    <div className="uploads">
+        <ul>
+            {Array.from(files).map((file, idx) => <li key={idx}>{file.name}</li> )}
+        </ul>
+        <div className="actions">
+            <button onClick={() => setFiles(null)}>Cancel</button>
+            <button onClick={handleUpload}>Upload</button>
+        </div>
+    </div>
+  )
   const toggleFileUpload = () => {
     setIsFileUploadOpen(!isFileUploadOpen);
   };
@@ -115,10 +151,11 @@ function Chatbot() {
   };
 
   return (
+    <>
     <div className="App">
-      <div style={{ display:"grid",  gridTemplateColumns: "2fr 1fr 1fr"  }}>
+      <div style={{ position:"relative", height: "500px", width: "100%"  }}>
         <MainContainer>
-          <ChatContainer style={{height:"700px"}}>       
+          <ChatContainer>       
             <MessageList 
               scrollBehavior="smooth" 
               typingIndicator={isTyping ? <TypingIndicator content="Typing" /> : null}
@@ -141,12 +178,44 @@ function Chatbot() {
       )}
 
       {/* Button to open/close the FileUploadComponent */}
-      <button onClick={toggleFileUpload}>
+      <button onClick={toggleFileUpload}
+style={{
+              backgroundColor: '#007bff', // Button background color
+        color: '#fff',              // Text color
+        padding: '10px 20px',       // Padding
+        border: 'none',             // Remove the default border
+        borderRadius: '5px',        // Rounded corners
+        cursor: 'pointer',          // Show a pointer cursor on hover
+      }}>
         {isFileUploadOpen ? 'Close File Upload' : 'Open File Upload'}
       </button>
       
       </div>
+
+
+    
     </div>
+          
+          <div 
+              className="dropzone"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+          >
+            <h1>Drag and Drop Files to Upload</h1>
+            <h1>Or</h1>
+            <input 
+              type="file"
+              multiple
+              onChange={(event) => {toggleFileUpload}}
+              hidden
+              accept="image/png, image/jpeg"
+              ref={inputRef}
+            />
+            <button onClick={() => inputRef.current.click()}>Select Files</button>
+          </div>
+      </>
+  
+
   )
 }
 

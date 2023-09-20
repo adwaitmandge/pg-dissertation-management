@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./videocall.css";
 const Videocall = () => {
   const [roomCode, setRoomCode] = useState("");
   const navigate = useNavigate();
@@ -11,8 +12,30 @@ const Videocall = () => {
   };
 
   return (
+    <div class="landing-page">
     <div className="home-page">
-      <form onSubmit={handleSubmit} className="form">
+      {/* <form onSubmit={handleSubmit} className="form">
+        <div>
+          <label>Enter Room Code</label>
+          <input
+            value={roomCode}
+            onChange={(e) => setRoomCode(e.target.value)}
+            type="text"
+            required
+            placeholder="Enter Room Code"
+          />
+        </div>
+        <button type="submit">Enter Room</button>
+      </form> */}
+
+      <div className="content">
+    <div className="container">
+      <div className="info">
+        <h1>Online Meeting Platform</h1>
+        <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus odit nihil ullam nesciunt quidem iste, Repellendus odit nihil
+        </p>
+        <form onSubmit={handleSubmit} className="form">
         <div>
           <label>Enter Room Code</label>
           <input
@@ -25,7 +48,16 @@ const Videocall = () => {
         </div>
         <button type="submit">Enter Room</button>
       </form>
+      </div>
+      <div className="image">
+        <img src="https://i.postimg.cc/65QxYYzh/001234.png" />
+      </div>
     </div>
+  </div>
+    </div>
+    </div>
+
+    
   );
 };
 export default Videocall;

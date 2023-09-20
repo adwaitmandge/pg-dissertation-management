@@ -145,7 +145,15 @@ function Summary() {
         )}
 
         {/* Button to open/close the FileUploadComponent */}
-        <button onClick={toggleFileUpload}>
+        <button onClick={toggleFileUpload}
+        style={{
+          backgroundColor: '#007bff', // Button background color
+    color: '#fff',              // Text color
+    padding: '10px 20px',       // Padding
+    border: 'none',             // Remove the default border
+    borderRadius: '5px',        // Rounded corners
+    cursor: 'pointer',          // Show a pointer cursor on hover
+  }}>
           {isFileUploadOpen ? "Close File Upload" : "Open File Upload"}
         </button>
       </div>

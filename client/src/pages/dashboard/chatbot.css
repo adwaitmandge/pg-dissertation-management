@@ -1,0 +1,157 @@
+/* chatbot.css */
+
+/* Set basic styles for the entire page */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* Consider using an appropriate background color */
+  }
+  
+  /* Improve overall layout and spacing */
+  .App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Style the chat container */
+  .MainContainer {
+    width: 700px; /* Adjust width as needed */
+    height: 800px; /* Adjust height as needed */
+    border: 1px solid #ccc; /* Add a border for clarity */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+    overflow: hidden; /* Ensure contents stay within the container */
+  }
+  
+  /* Style the message list */
+  /* chatbot.css */
+  .ChatContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100vh;
+    width: 50%; /* Adjust the width to your preference */
+    float: left;
+    padding: 20px; /* Add padding to the chat container */
+    box-sizing: border-box; /* Include padding in the width calculation */
+  }
+
+/* ... (previous styles) */
+
+/* Style the message list */
+.MessageList {
+    max-height: 40px; /* Set a maximum height for the message list */
+    overflow-y: auto; /* Allow vertical scrolling when content exceeds max-height */
+  }
+  
+  /* Style the message input */
+  
+    .MessageInput {
+        background-color: #fff; /* White background for the input area */
+        border: none;
+        border-top: 1px solid #ccc; /* Add a top border to separate messages */
+        padding: 10px;
+        position: sticky; /* Stick the input to the bottom */
+        bottom: 20px; /* Position it slightly above the very bottom */
+        height: 60px; /* Set a fixed height for the input area */
+      }
+  
+  
+  
+  /* Style the send button */
+  .MessageInput button[type="submit"] {
+    background-color: #007bff; /* Change to your desired send button color */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add a subtle hover effect */
+  }
+  
+  .MessageInput button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker color on hover */
+  }
+  
+  /* Style the typing indicator */
+  .TypingIndicator {
+    font-style: italic;
+    color: #777; /* Adjust the color of the typing indicator */
+  }
+  
+  /* Style the file upload button */
+  .FileUploadButton {
+    display: inline-block;
+    background-color: #007bff; /* Change to your desired file upload button color */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease; /* Add a subtle hover effect */
+  }
+  
+  .FileUploadButton:hover {
+    background-color: #0056b3; /* Darker color on hover */
+  }
+  .dropzone {
+    
+    border: 5px dashed rgb(117, 112, 112);
+
+
+
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  width: 100%; /* Adjust the width to your preference */
+  float: right;
+  padding: 20px; /* Add padding to the dropzone */
+  box-sizing: border-box; 
+  }
+  
+  .active {
+    background-color: #5f5959;
+  }
+  
+  button {
+    padding: 1rem;
+    margin: 1rem;
+    font-size: medium;
+  }
+  
+  
+  .list-item {
+    display: flex;
+    padding: 0;
+    margin: 8px 0;
+    min-width: 300px;
+    font-size: 22px;
+    background-color: #d4d2d2;
+    cursor: grab;
+    border-radius: 10px;
+  }
+  
+  .list-item > h3 {
+    padding: 10px;
+    margin: 0;
+  }
+  
+  .list-item > span {
+    margin-right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    border-right: 2px solid white;
+    padding: 10px;
+    padding-right: 16px;
+  }
+  
+  .next-position {
+    border: 2px solid #34d44f;
+    opacity: 0.2;
+  }

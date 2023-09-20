@@ -1,0 +1,5 @@
+.room-container {
+    width: 100%; /* Make the container 100% wide */
+    height: 100vh; /* Make the container 100% tall (viewport height) */
+    background-color: #fff;
+  }
