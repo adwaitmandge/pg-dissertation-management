@@ -10,6 +10,7 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import FileUploadComponent from "./fileupload";
 import { UserState } from "@/context/UserProvider";
+import DocViewer, { PDFRenderer, DocViewerRenderers } from "react-doc-viewer";
 
 function ThesisUpload() {
   const { user } = UserState();
@@ -19,6 +20,7 @@ function ThesisUpload() {
   const [publicationName, setPublicationName] = useState("");
   const [publications, setPublications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [docs, setDocs] = useState();
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -80,6 +82,8 @@ function ThesisUpload() {
           ...publications,
           { cloudinaryLink: response.data.secure_url },
         ]);
+
+        setDocs([{ uri: response.data.secure_url }]);
         console.log(publications);
         setPublicationName("");
 
@@ -92,9 +96,16 @@ function ThesisUpload() {
     }
   };
 
+  // const docs = [
+  //   {
+  //     uri: "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx",
+  //   },
+  // ];
+
   return (
-    <div className="App">
-      <div style={{ position: "relative", height: "800px", width: "700px" }}>
+    <div className="mb-3 pt-11">
+      {/* <div style={{ position: "relative", height: "800px", width: "700px" }}> */}
+      <div>
         <div className="">
           <label
             class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -159,6 +170,20 @@ function ThesisUpload() {
           Submit
         </button>
       </div>
+      {docs && (
+        <DocViewer
+          className="h-[70vh]"
+          pluginRenderers={DocViewerRenderers}
+          documents={docs}
+          config={{
+            header: {
+              disableHeader: false,
+              disableFileName: false,
+              retainURLParams: false,
+            },
+          }}
+        />
+      )}
     </div>
   );
 }

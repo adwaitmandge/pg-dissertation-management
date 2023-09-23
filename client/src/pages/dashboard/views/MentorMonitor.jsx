@@ -128,8 +128,16 @@ const MentorMonitor = () => {
     console.log(temp2);
     calculateAssignedProgress(temp2);
     setAssignedTasks(temp2);
-
     setShowAddTaskModal(false);
+
+    toast({
+      title: "Task Assigned!",
+      description: "New task created successfully",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
   };
 
   //////////////////////////////// UDPATE TASK /////////////////////////////////////////////////////
@@ -173,8 +181,16 @@ const MentorMonitor = () => {
 
       console.log(temp2);
       calculateAssignedProgress(temp2);
-
       setAssignedTasks(temp2);
+
+      toast({
+        title: "Task Updated!",
+        description: "Details updated successfully!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -214,8 +230,16 @@ const MentorMonitor = () => {
 
       console.log(temp2);
       calculateAssignedProgress(temp2);
-
       setAssignedTasks(temp2);
+
+      toast({
+        title: "Task Deleted!",
+        description: "Task deleted successfully",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
     } catch (error) {
       console.log("ERROR OCCURRED WHILE DELETING GOALS");
       console.log(error.message);

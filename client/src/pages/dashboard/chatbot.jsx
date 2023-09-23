@@ -164,7 +164,7 @@ function Chatbot() {
 
   return (
     <>
-      <div className="App">
+      <div className="">
         <div style={{ position: "relative", height: "500px", width: "100%" }}>
           <MainContainer>
             <ChatContainer>

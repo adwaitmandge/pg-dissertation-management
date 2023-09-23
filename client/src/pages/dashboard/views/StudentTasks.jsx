@@ -260,6 +260,7 @@ const StudentTasks = () => {
 
   const markDone = async (task) => {
     console.log("INSIDE MARK DONE");
+    const completed = task.isCompleted;
     try {
       console.log("ABOUT TO SEND A PATCH REQUEST");
       const res = await fetch("http://localhost:5000/api/dashboard/goals", {
@@ -296,6 +297,26 @@ const StudentTasks = () => {
       console.log((count2 / assignedTasks.length) * 100);
       setPersonalProgress((count1 / personalTasks.length) * 100);
       setAssignedTasksProgress((count2 / assignedTasks.length) * 100);
+
+      if (completed) {
+        toast({
+          title: "Unmarked!",
+          description: "Task Pending",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+      } else {
+        toast({
+          title: "Marked as done!",
+          description: "Task Completed",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -339,6 +360,14 @@ const StudentTasks = () => {
 
       setPersonalTasks(temp1);
       setAssignedTasks(temp2);
+      toast({
+        title: "Task Deleted!",
+        description: "Task deleted successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
     } catch (error) {
       console.log("ERROR OCCURRED WHILE DELETING GOALS");
       console.log(error.message);
