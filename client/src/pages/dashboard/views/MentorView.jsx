@@ -29,6 +29,7 @@ import {
 } from "@/data";
 import { UserState } from "@/context/UserProvider";
 import { useNavigate } from "react-router-dom";
+import AddTaskModal from "@/components/miscellaneous/AddTaskModal";
 
 export function MentorView() {
   const { user } = UserState();
@@ -38,7 +39,42 @@ export function MentorView() {
   const [selectedStudent, setSelectedStudent] = useState({});
   const navigate = useNavigate();
 
-  const modalHandler = {};
+  const modalHandler = (student) => {
+    setSelectedStudent(student);
+    setShowModal(true);
+  };
+
+  const taskCreationHandler = async (newTask, student) => {
+    if (!newTask.task) {
+      console.log("Cannot assign an empty task");
+      return;
+    }
+
+    const id = student._id;
+    const body = {
+      newTask,
+      id,
+    };
+
+    console.log(body);
+
+    console.log("Before sending post request");
+    const res = await fetch("http://localhost:5000/api/mentor/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    console.log("After sending post request");
+    const data = await res.json();
+    console.log(data);
+
+    setShowModal(false);
+    setSelectedStudent({});
+  };
 
   const getStudents = async () => {
     try {

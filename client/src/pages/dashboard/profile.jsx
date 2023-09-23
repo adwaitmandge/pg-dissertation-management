@@ -30,7 +30,7 @@ import { NavigateBeforeTwoTone } from "@mui/icons-material";
 export function Profile() {
   const { user } = UserState();
   const [allThesis, setAllThesis] = useState([]);
-  
+
   const docs = [
     {
       uri: "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694840138/rb6qrhwvacosxwqrlies.pdf",
@@ -86,7 +86,7 @@ export function Profile() {
                   variant="small"
                   className="font-normal text-blue-gray-600"
                 >
-                  CEO / Co-Founder
+                  {user?.role}
                 </Typography>
               </div>
             </div>

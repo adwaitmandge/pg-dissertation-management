@@ -127,7 +127,7 @@ const summarize = async (req, res) => {
 
 const fetchAllThesis = async (req, res) => {
   try {
-    const professor = await User.findOne({ name: "Ss Shrwanerw" });
+    const professor = await User.findOne({ name: "Prof. Shrawne" });
     console.log(professor);
     res.json(professor);
   } catch (err) {
@@ -136,7 +136,7 @@ const fetchAllThesis = async (req, res) => {
 };
 const fetchMyThesis = async (req, res) => {
   try {
-    const thes = await PendingThesis.find({student: req.user._id });
+    const thes = await PendingThesis.find({ student: req.user._id });
     console.log(thes);
     res.json(thes);
   } catch (err) {
@@ -213,5 +213,5 @@ module.exports = {
   firstSubmission,
   fetchNotifications,
   updateFeedback,
-  fetchMyThesis
+  fetchMyThesis,
 };

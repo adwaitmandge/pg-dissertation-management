@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useToast } from "@chakra-ui/react";
+import { useToast, Progress } from "@chakra-ui/react";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import { calcLength } from "framer-motion";
 import AddTaskForm from "@/components/AddTaskForm";
@@ -356,12 +356,17 @@ const StudentTasks = () => {
           <div className="bg-gray-200">
             <div className=" flex flex-col p-6 md:space-y-[2%]">
               <span>Personal Progress</span>
-              <LinearProgress variant="determinate" value={personalProgress} />
+              {/* <div class="h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+                <div
+                  className={`h-2.5 w-[${100}%] rounded-full bg-blue-600`}
+                ></div>
+              </div> */}
+              <Progress className="rounded-full" value={personalProgress} />
             </div>
             <div className="flex flex-col p-6 md:space-y-[2%]">
               <span>Assignment Progress</span>
-              <LinearProgress
-                variant="determinate"
+              <Progress
+                className="rounded-full"
                 value={assignedTasksProgress}
               />
             </div>

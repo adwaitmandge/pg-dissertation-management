@@ -59,7 +59,7 @@ export const routes = [
       {
         icon: <SignalIcon {...icon} />,
         name: "Connection",
-        path: "/connection",
+        path: "connection",
         element: <PendingConnections />,
       },
       {
@@ -80,12 +80,12 @@ export const routes = [
         path: "mentor/:id",
         element: <MentorMonitor />,
       },
-      // {
-      //   icon: <ClipboardDocumentListIcon {...icon} />,
-      //   name: "tasks",
-      //   path: "student",
-      //   element: <StudentTasks />,
-      // },
+      {
+        icon: <ClipboardDocumentListIcon {...icon} />,
+        name: "tasks",
+        path: "student",
+        element: <StudentTasks />,
+      },
       {
         icon: <VideoCameraIcon {...icon} />,
         name: "Video Call",
@@ -100,7 +100,7 @@ export const routes = [
       },
       {
         icon: <ClipboardIcon {...icon} />,
-        name: "DocGPT",
+        name: "DocAnalyser",
         path: "chatbot",
         element: <Chatbot />,
       },

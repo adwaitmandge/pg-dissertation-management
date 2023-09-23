@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useToast } from "@chakra-ui/react";
+import { useToast, Progress } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { UserState } from "@/context/UserProvider";
 import AddTaskModal from "@/components/miscellaneous/AddTaskModal";
@@ -52,7 +52,7 @@ const MentorMonitor = () => {
         method: "GET",
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
           id: id,
         },
       });
@@ -233,8 +233,13 @@ const MentorMonitor = () => {
           <div className="bg-gray-200">
             <div className="flex flex-col p-6 md:space-y-[2%]">
               <span>Assignment Progress</span>
-              <LinearProgress
-                variant="determinate"
+              {/* <div class="h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+                <div
+                  className={`h-2.5 w-[0.5%] rounded-full bg-blue-600`}
+                ></div>
+              </div> */}
+              <Progress
+                className="rounded-full"
                 value={assignedTasksProgress}
               />
             </div>

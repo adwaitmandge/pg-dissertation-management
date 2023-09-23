@@ -115,12 +115,9 @@ mongoose
   });
 
 const updateDescription = async () => {
-  const allConnections = await Connection.find();
-  const reqUser = "64fd6b2dcf1cf3420c0038bf";
-  const result = allConnections.filter(
-    (connection) => connection.from == reqUser
-  );
-  console.log(result);
+  const user = await User.findOne({ email: "shrawne@gmail.com" });
+  user.students.push("64fd6b2dcf1cf3420c0038bf");
+  await user.save();
 };
 
 updateDescription();

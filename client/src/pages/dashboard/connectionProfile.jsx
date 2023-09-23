@@ -55,6 +55,7 @@ export function ConnectionProfile() {
       });
 
       const data = await res.json();
+      console.log("The data is ", data);
       console.log(data.thesis);
       setAllThesis(data.thesis);
       // setDocs(data.thesis.map((thesis) => thesis.cloudinaryLink));
@@ -133,6 +134,7 @@ export function ConnectionProfile() {
   };
 
   useEffect(() => {
+    fetchThesis();
     fetchConnections();
   }, [user]);
 
@@ -161,7 +163,7 @@ export function ConnectionProfile() {
                   variant="small"
                   className="font-normal text-blue-gray-600"
                 >
-                  CEO / Co-Founder
+                  {connection?.role}
                 </Typography>
               </div>
             </div>
@@ -185,8 +187,8 @@ export function ConnectionProfile() {
               </button>
             </div>
           </div>
-          <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
-            <div>
+          <div className="mb-12 grid grid-cols-1 gap-12 px-4 lg:grid-cols-2 xl:grid-cols-2">
+            <di>
               <Typography variant="h6" color="blue-gray" className="mb-3">
                 Platform Settings
               </Typography>
@@ -212,7 +214,7 @@ export function ConnectionProfile() {
                   </div>
                 ))}
               </div>
-            </div>
+            </di>
             <ProfileInfoCard
               title="Profile Information"
               description={`${connection?.description}`}
@@ -235,34 +237,10 @@ export function ConnectionProfile() {
                 </Tooltip>
               }
             />
-            <div>
-              <Typography variant="h6" color="blue-gray" className="mb-3">
-                Platform Settings
-              </Typography>
-              <ul className="flex flex-col gap-6">
-                {conversationsData.map((props) => (
-                  <MessageCard
-                    key={props.name}
-                    {...props}
-                    action={
-                      <Button variant="text" size="sm">
-                        reply
-                      </Button>
-                    }
-                  />
-                ))}
-              </ul>
-            </div>
           </div>
           <div className="px-4 pb-4">
             <Typography variant="h6" color="blue-gray" className="mb-2">
               Projects
-            </Typography>
-            <Typography
-              variant="small"
-              className="font-normal text-blue-gray-500"
-            >
-              Architects design houses
             </Typography>
             <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
               {allThesis?.map(
@@ -283,22 +261,13 @@ export function ConnectionProfile() {
                         pluginRenderers={[PDFRenderer]}
                       />
 
-                      {/* <CardHeader
-                          floated={false}
-                          color="gray"
-                          className="mx-0 mt-0 mb-4 h-64 xl:h-40"
-                        >
-                          <img
-                            src={img}
-                            alt={"Chinese"}
-                            className="h-full w-full object-cover"
-                          />
-                        </CardHeader> */}
                       <CardBody className="py-0 px-1">
                         <Typography
                           variant="small"
                           className="font-normal text-blue-gray-500"
-                        ></Typography>
+                        >
+                          {" "}
+                        </Typography>
                         <Typography
                           variant="h5"
                           color="blue-gray"

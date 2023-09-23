@@ -151,7 +151,7 @@ function ThesisPreview() {
 
   // console.log(paragraphs);
   return (
-    <div className="App">
+    <div className="h-[70vh] flex-col">
       <div>
         <DocViewer
           className="h-[70vh]"
@@ -159,18 +159,20 @@ function ThesisPreview() {
           documents={docs}
         />
       </div>
-{user?.role=="Mentor" && <button
-        onClick={() =>
-          onUrlUpload(
-            "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx"
-          )
-        }
-        type="button"
-        class="mr-2 mt-3 mb-2 inline-flex h-12 w-[100%] items-center justify-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-lg font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
-      >
-        Plagiarism Detector
-      </button>}
-      
+      {user?.role == "Mentor" && (
+        <button
+          onClick={() =>
+            onUrlUpload(
+              "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx"
+            )
+          }
+          type="button"
+          class="mr-2 mt-3 mb-2 inline-flex h-12 w-[100%] items-center justify-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-lg font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
+        >
+          Plagiarism Detector
+        </button>
+      )}
+
       {result && (
         <div>
           <h3>Plagiarism Check Result</h3>
@@ -197,24 +199,26 @@ function ThesisPreview() {
         </div>
       )}
       <>
-      {user?.role=="Mentor" &&
-      <>
-      <button
-        onClick={() => sendFeeback("Accept")}
-        type="button"
-        class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
-      >
-        Accept
-      </button>
-      <button
-        onClick={() => sendFeeback("Reject")}
-        type="button"
-        class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
-      >
-        Reject
-      </button>
-      <input type="text" onChange={(e) => setFeedback(e.target.value)} /></>
-      }</>
+        {user?.role == "Mentor" && (
+          <>
+            <button
+              onClick={() => sendFeeback("Accept")}
+              type="button"
+              class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
+            >
+              Accept
+            </button>
+            <button
+              onClick={() => sendFeeback("Reject")}
+              type="button"
+              class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
+            >
+              Reject
+            </button>
+            <input type="text" onChange={(e) => setFeedback(e.target.value)} />
+          </>
+        )}
+      </>
     </div>
   );
 }

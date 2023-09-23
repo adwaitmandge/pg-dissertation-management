@@ -15,6 +15,7 @@ const ToDo = ({ toDo, deleteTask, updateTask, markDone }) => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState({});
 
+
   const getMonth = (num) => {
     if (num == 1) return "Jan";
 
@@ -78,13 +79,17 @@ const ToDo = ({ toDo, deleteTask, updateTask, markDone }) => {
                     <FontAwesomeIcon icon={faTrashCan} />
                   </Button>
                 )}
-                <button
-                  className="pointer-events-auto mr-[20px] mb-[10px] inline-block text-[#00ff89] hover:text-[#ff5e00]"
-                  title={`${task.isCompleted ? "Completed" : "Not Completed"}`}
-                  onClick={(e) => markDone(task)}
-                >
-                  <FontAwesomeIcon icon={faCircleCheck} />
-                </button>
+                {user?.role != "Mentor" && (
+                  <button
+                    className="pointer-events-auto mr-[20px] mb-[10px] inline-block text-[#00ff89] hover:text-[#ff5e00]"
+                    title={`${
+                      task.isCompleted ? "Completed" : "Not Completed"
+                    }`}
+                    onClick={(e) => markDone(task)}
+                  >
+                    <FontAwesomeIcon icon={faCircleCheck} />
+                  </button>
+                )}
                 <span className="text-sm font-bold">
                   Due {`${day} ${month}`}
                 </span>

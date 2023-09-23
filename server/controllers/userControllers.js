@@ -88,7 +88,7 @@ const authUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
   console.log("Inside users at the backend");
-  console.log(user,"New user created");
+  console.log(user, "New user created");
   console.log(password);
   if (user /* && (await user.matchPassword(password)) */) {
     res.json({

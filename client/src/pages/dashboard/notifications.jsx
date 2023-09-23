@@ -34,59 +34,57 @@ export function Notifications() {
   const alerts = ["blue", "green", "orange", "red"];
 
   const [pendingThesis, setPendingThesis] = useState([]);
-  if(user.role=="Mentor")
-  {
-    console.log("I am mentor")
-  const getPendingThesis = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:5000/api/thesis/thesis-notifications",
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
+  if (user.role == "Mentor") {
+    console.log("I am mentor");
+    const getPendingThesis = async () => {
+      try {
+        const res = await fetch(
+          "http://localhost:5000/api/thesis/thesis-notifications",
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        );
 
-      const data = await res.json();
-      console.log(data);
-      setPendingThesis(data);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+        const data = await res.json();
+        console.log(data);
+        setPendingThesis(data);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
 
-  useEffect(() => {
-    getPendingThesis();
-  }, [user]);
+    useEffect(() => {
+      getPendingThesis();
+    }, [user]);
   }
-  if(user.role=="Student")
-  {
-    console.log("I am a student")
-  const getPendingThesis = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:5000/api/thesis/getfeedback",
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
+  if (user.role == "Student") {
+    console.log("I am a student");
+    const getPendingThesis = async () => {
+      try {
+        const res = await fetch(
+          "http://localhost:5000/api/thesis/getfeedback",
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        );
 
-      const data = await res.json();
-      console.log(data);
-      setPendingThesis(data);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+        const data = await res.json();
+        console.log(data);
+        setPendingThesis(data);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
 
-  useEffect(() => {
-    getPendingThesis();
-  }, [user]);
+    useEffect(() => {
+      getPendingThesis();
+    }, [user]);
   }
-  console.log("Hi")
+  console.log("Hi");
   return (
     <div className="mx-auto my-20 flex max-w-screen-lg flex-col gap-8">
       <Card>
@@ -106,76 +104,78 @@ export function Notifications() {
               to={`/dashboard/preview/thesis/${thesis._id}`}
               state={{ thesis: thesis }}
             >
-              {user.role=="Student" &&
-              <>
-              {thesis?.feedback}
-              {thesis?.status=="Accept" &&
-              <Alert
-                key={index}
-                show={showAlerts["green"]}
-                color={"green"}
-                dismissible={{
-                  onClose: () =>
-                    setShowAlerts((current) => ({
-                      ...current,
-                      [color]: false,
-                    })),
-                }}
-              >
-                {thesis?.status}
-              </Alert>}
-              {thesis?.status=="Pending" &&
-              <Alert
-                key={index}
-                show={showAlerts["orange"]}
-                color={"orange"}
-                dismissible={{
-                  onClose: () =>
-                    setShowAlerts((current) => ({
-                      ...current,
-                      [color]: false,
-                    })),
-                }}
-              >
-                {thesis?.status}
-              </Alert>}
-              {thesis?.status=="Reject" &&
-              <Alert
-                key={index}
-                show={showAlerts["red"]}
-                color={"red"}
-                dismissible={{
-                  onClose: () =>
-                    setShowAlerts((current) => ({
-                      ...current,
-                      [color]: false,
-                    })),
-                }}
-              >
-                {thesis?.status}
-              </Alert>}
-              </>
-              }
-              {user.role=="Mentor" &&
-              <>
-              {thesis?.student.name}
-              <Alert
-                key={index}
-                show={showAlerts["green"]}
-                color={"green"}
-                dismissible={{
-                  onClose: () =>
-                    setShowAlerts((current) => ({
-                      ...current,
-                      [color]: false,
-                    })),
-                }}
-              >
-
-              {thesis?.student.name}
-              </Alert>
-              </>}
-              
+              {user.role == "Student" && (
+                <>
+                  {thesis?.feedback}
+                  {thesis?.status == "Accept" && (
+                    <Alert
+                      key={index}
+                      show={showAlerts["green"]}
+                      color={"green"}
+                      dismissible={{
+                        onClose: () =>
+                          setShowAlerts((current) => ({
+                            ...current,
+                            [color]: false,
+                          })),
+                      }}
+                    >
+                      {thesis?.status}
+                    </Alert>
+                  )}
+                  {thesis?.status == "Pending" && (
+                    <Alert
+                      key={index}
+                      show={showAlerts["orange"]}
+                      color={"orange"}
+                      dismissible={{
+                        onClose: () =>
+                          setShowAlerts((current) => ({
+                            ...current,
+                            [color]: false,
+                          })),
+                      }}
+                    >
+                      {thesis?.status}
+                    </Alert>
+                  )}
+                  {thesis?.status == "Reject" && (
+                    <Alert
+                      key={index}
+                      show={showAlerts["red"]}
+                      color={"red"}
+                      dismissible={{
+                        onClose: () =>
+                          setShowAlerts((current) => ({
+                            ...current,
+                            [color]: false,
+                          })),
+                      }}
+                    >
+                      {thesis?.status}
+                    </Alert>
+                  )}
+                </>
+              )}
+              {user.role == "Mentor" && (
+                <>
+                  {thesis?.student.name}
+                  <Alert
+                    key={index}
+                    show={showAlerts["green"]}
+                    color={"green"}
+                    dismissible={{
+                      onClose: () =>
+                        setShowAlerts((current) => ({
+                          ...current,
+                          [color]: false,
+                        })),
+                    }}
+                  >
+                    {thesis?.student.name}
+                  </Alert>
+                </>
+              )}
             </Link>
           ))}
         </CardBody>

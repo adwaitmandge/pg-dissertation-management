@@ -152,8 +152,9 @@ async function manipulateDOM() {
   const response = await addUrlToChatPdf(data.data);
   console.log(response);
   // handleSend
+  const size = researchPaperText.size / 3;
   const result = await handleSend(
-    "Summarize the document in 600 words",
+    `Summarize the document in 600 words`,
     response
   );
   console.log(result);
@@ -167,11 +168,42 @@ async function manipulateDOM() {
     .querySelector("div");
   console.log(divElement);
 
-  divElement.querySelector("ul").style.display = "none";
+  // divElement.querySelector("ul").style.display = "none";
   const summaryElement = document.createElement("div");
-  summaryElement.innerText = result.result.content;
+  const mainSummary = document.createElement("div");
 
-  divElement.appendChild(summaryElement);
+  mainSummary.innerText = result.result.content;
+
+  const heading = document.createElement("h1");
+  heading.innerText = "Summary";
+  heading.style.fontSize = "25px";
+  heading.style.fontWeight = "bold";
+  heading.style.color = "#121212";
+  heading.style.borderBottomWidth = "2px";
+  heading.style.borderBottomStyle = "solid";
+  heading.style.borderBottomColor = "#eee";
+  heading.style.paddingBottom = "0.6rem";
+
+  summaryElement.appendChild(heading);
+  summaryElement.appendChild(mainSummary);
+
+  const mainContainer = divElement.nextElementSibling;
+  divElement.parentNode.removeChild(divElement);
+
+  const rightContainer = mainContainer.nextElementSibling;
+  rightContainer.parentNode.removeChild(rightContainer);
+  mainContainer.parentNode.appendChild(summaryElement);
+
+  mainContainer.style.width = "55%";
+  summaryElement.style.width = "45%";
+
+  mainSummary.style.fontSize = "16px";
+  mainSummary.style.lineHeight = "30px";
+  mainSummary.style.textAlign = "justify";
+  mainSummary.style.wordBreak = "break-all";
+  summaryElement.style.marginLeft = "10px";
+  mainContainer.style.marginRight = "10px";
+  mainSummary.style.overflowWrap = "break-word";
 }
 
 // Execute the function when the content script is injected into the page

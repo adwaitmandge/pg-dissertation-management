@@ -10,8 +10,11 @@ const compare = (a, b) => {
 const assignTask = asyncHandler(async (req, res) => {
   try {
     console.log("Inside assign tasks at the backend");
+    console.log("The stud");
     const student = await User.findById(req.body.id);
+    console.log(student);
     const { newTask } = req.body;
+    console.log(newTask);
     newTask.deadline = new Date(`${newTask.date} ${newTask.time}`);
     newTask.creator = req.user._id;
     newTask.assigned_to = req.body.id;
@@ -53,6 +56,7 @@ const updateGoal = asyncHandler(async (req, res) => {
 const deleteGoal = asyncHandler(async (req, res) => {
   const { id, task } = req.body;
   const foundUser = await User.findById(id);
+  console.log("The found user is", foundUser);
   const newGoals = foundUser.goals.filter((goal) => goal._id != task._id);
   foundUser.goals = newGoals;
   await foundUser.save();

@@ -41,6 +41,7 @@ import NotificationBadge from "react-notification-badge";
 import { Effect } from "react-notification-badge";
 import { UserState } from "@/context/UserProvider";
 import { useNavigate } from "react-router-dom";
+import ChatLoading from "../ChatLoading";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -94,7 +95,7 @@ const SideDrawer = () => {
       const { data } = await axios.get(
         `http://localhost:5000/api/user?search=${search}`,
         config
-      );r
+      );
 
       console.log(data);
       setLoading(false);
@@ -156,7 +157,7 @@ const SideDrawer = () => {
           </Button>
         </Tooltip>
         <Text fontSize="2xl" className="font-sans">
-          <a href="/dashboard">Discussion Forum</a>
+          <a href="/dashboard/home">Discussion Forum</a>
         </Text>
         <div>
           <Menu>
