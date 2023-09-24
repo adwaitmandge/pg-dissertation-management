@@ -115,9 +115,7 @@ const handleSend = async (message, sourceId) => {
   }
 };
 
-// Function to interact with the DOM elements
-async function manipulateDOM() {
-  console.log("hoisfaj");
+const generateSummary = async () => {
   // Example: Changing the background color of all paragraphs to red
   let researchPaperText = "";
 
@@ -204,10 +202,47 @@ async function manipulateDOM() {
   summaryElement.style.marginLeft = "10px";
   mainContainer.style.marginRight = "10px";
   mainSummary.style.overflowWrap = "break-word";
+
+  const mainParent = document.querySelector("section");
+  mainParent.firstChild.style.display = "none";
+};
+
+// Function to interact with the DOM elements
+async function manipulateDOM() {
+  const buttonContainer = document.querySelector("section");
+  const firstChild = buttonContainer.childNodes[0];
+
+  const button = document.createElement("button");
+
+  // Set the button type attribute
+  button.setAttribute("type", "button");
+
+  // Add classes to the button
+  button.style.color = "white";
+  button.style.backgroundColor = "#1F2937";
+  button.style.fontWeight = "500";
+  button.style.borderRadius = "0.5rem";
+  button.style.fontSize = "15pxpx";
+  button.style.lineHeight = "1.25rem";
+  button.style.paddingLeft = "1rem";
+  button.style.paddingRight = "1rem";
+  button.style.paddingTop = "1rem";
+  button.style.paddingBottom = "1rem";
+  button.style.display = "flex";
+  button.style.justifyContent = "center";
+  button.style.flexGrow = "1";
+  button.style.width = "575px";
+  // Set the button text
+  button.innerText = "Generate Summary";
+
+  buttonContainer.insertBefore(button, firstChild);
+  console.log("hoisfaj");
+
+  button.addEventListener("click", generateSummary);
 }
 
 // Execute the function when the content script is injected into the page
-setTimeout(manipulateDOM, 5000);
+setTimeout(manipulateDOM, 3000);
 
 // async function apicall() {
 //   const res = await fetch("https://dummyjson.com/products");

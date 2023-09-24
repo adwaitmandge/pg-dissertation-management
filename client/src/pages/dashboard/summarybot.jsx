@@ -432,7 +432,7 @@ function Summary() {
                     d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
                   />
                 </svg>
-                <span class="sr-only">Full screen</span>
+                <span class="sr-only ">Full screen</span>
               </button>
             </Tooltip>
           </div>
@@ -444,8 +444,10 @@ function Summary() {
               id="editor"
               rows={!result ? "8" : "15"}
               class="block w-full border-0 bg-white px-0 text-sm text-gray-800 focus:ring-0 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
-              placeholder="Write an article..."
+              placeholder="Upload a file.."
               required
+              disabled={!result}
+              onChange={(e) => setResult(e.target.value)}
               value={!result ? "Upload a file" : result}
             ></textarea>
           </div>
