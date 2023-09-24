@@ -30,7 +30,7 @@ function ThesisPreview() {
   console.log(thesis);
 
   const cloudinaryLink = thesis.cloudinaryLink; // Assuming 'cloudinaryLink' is the property name
-console.log(cloudinaryLink);
+  console.log(cloudinaryLink);
 
   function str2xml(str) {
     if (str.charCodeAt(0) === 65279) {
@@ -154,21 +154,17 @@ console.log(cloudinaryLink);
 
   // console.log(paragraphs);
   return (
-    <div className="h-[70vh] flex-col">
+    <div className="h-full flex-col">
       <div>
         <DocViewer
-          className="h-[70vh]"
+          className="h-auto"
           pluginRenderers={DocViewerRenderers}
           documents={docs}
         />
       </div>
       {user?.role == "Mentor" && (
         <button
-          onClick={() =>
-            onUrlUpload(
-              cloudinaryLink
-            )
-          }
+          onClick={() => onUrlUpload(cloudinaryLink)}
           type="button"
           class="mr-2 mt-3 mb-2 inline-flex h-12 w-[100%] items-center justify-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-lg font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
         >
@@ -201,27 +197,45 @@ console.log(cloudinaryLink);
           )}
         </div>
       )}
-      <>
+      <div className="flex flex-col justify-center">
         {user?.role == "Mentor" && (
           <>
-            <button
-              onClick={() => sendFeeback("Accept")}
-              type="button"
-              class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
-            >
-              Accept
-            </button>
-            <button
-              onClick={() => sendFeeback("Reject")}
-              type="button"
-              class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
-            >
-              Reject
-            </button>
-            <input type="text" onChange={(e) => setFeedback(e.target.value)} />
+            <div class="mb-4 w-full rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+              <div class="rounded-t-lg bg-white px-4 py-2 dark:bg-gray-800">
+                <label for="comment" class="sr-only">
+                  Your comment
+                </label>
+                <textarea
+                  id="comment"
+                  rows="10"
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                  class="w-full border-0 bg-white px-0 text-sm text-gray-900 focus:ring-0 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                  placeholder="Write a comment..."
+                  required
+                ></textarea>
+              </div>
+              <div class="flex flex-col items-center justify-center border-t px-3 py-2 dark:border-gray-600">
+                <button
+                  onClick={() => sendFeeback("Accept")}
+                  type="button"
+                  class="mr-2 mb-2 w-full rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                >
+                  Accept
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => sendFeeback("Reject")}
+                  class="mr-2 mb-2 w-full rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
           </>
         )}
-      </>
+      </div>
     </div>
   );
 }
