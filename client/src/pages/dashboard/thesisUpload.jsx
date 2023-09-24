@@ -1,13 +1,29 @@
 import { useState, useEffect } from "react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import axios from "axios";
-import {
+import UserListItem from "@/components/UserAvatar/UserListItem";
+
+import { useNavigate } from "react-router-dom";import {
   MainContainer,
   ChatContainer,
   MessageList,
   Message,
   TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  FormControl,
+  Input,
+  useToast,
+  Box,
+} from "@chakra-ui/react";
 import FileUploadComponent from "./fileupload";
 import { UserState } from "@/context/UserProvider";
 import DocViewer, { PDFRenderer, DocViewerRenderers } from "react-doc-viewer";
@@ -21,6 +37,42 @@ function ThesisUpload() {
   const [publications, setPublications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [docs, setDocs] = useState();
+  const [input, setInput] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
+  // Other state and context variable declarations...
+
+  const navigate = useNavigate();
+
+  const handleSearch = async (query) => {
+    if (!query) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `http://localhost:5000/api/thesis/allment?search=${query}`,
+        config
+      );
+
+      setLoading(false);
+      setSearchResult(data);
+      setShowResults(true); // Show the search results dropdown
+    } catch (error) {
+      console.error("Error occurred:", error);
+      setLoading(false);
+      // Handle error and display an error message if needed
+    }
+  };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -44,7 +96,7 @@ function ThesisUpload() {
           Authorization: `Bearer ${user?.token}`,
         },
         body: JSON.stringify({
-          publications,
+          publications,selectedUserId
         }),
       });
 
@@ -95,7 +147,8 @@ function ThesisUpload() {
       console.error("Error uploading file to Cloudinary:", error);
     }
   };
-
+  const [selectedUserId, setSelectedUserId] = useState(null);
+console.log(selectedUserId);
   // const docs = [
   //   {
   //     uri: "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx",
@@ -103,6 +156,48 @@ function ThesisUpload() {
   // ];
 
   return (
+
+
+    <div className="flex items-center">
+      <div className="mr-auto flex-1 md:mr-4 md:w-56">
+        <Input
+          onClick={() => setShowResults(!showResults)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            handleSearch(e.target.value);
+          }}
+          className="mr-3"
+          label="Search Users"
+        />
+        {loading ? (
+          <div>Loading</div>
+        ) : (
+          <div
+            className={`absolute z-50 rounded-3xl bg-white ${
+              showResults ? "" : "hidden"
+            } p-4 shadow-lg`}
+          >      {searchResult?.map((user, index) => (
+            <div
+              onClick={() => {
+                console.log("I am", user);
+                setSelectedUserId(user.to._id);
+              }}
+              key={user._id}
+            >
+              <UserListItem
+                user={user.to}
+                onClick={() => {
+                  console.log("Clicked");
+                }}
+              />
+            </div>
+          ))}
+          {searchResult.length === 0 && <div>No results found.</div>}
+          </div>
+        )}
+      </div>
+
+    
     <div className="mb-3 pt-11">
       {/* <div style={{ position: "relative", height: "800px", width: "700px" }}> */}
       <div>
@@ -184,6 +279,7 @@ function ThesisUpload() {
           }}
         />
       )}
+    </div>
     </div>
   );
 }

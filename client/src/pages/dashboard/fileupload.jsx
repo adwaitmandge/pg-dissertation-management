@@ -3,7 +3,44 @@ import axios from 'axios';
  
 const FileUploadComponent = ({addUrlToChatPdf}) => {
   const [file, setFile] = useState(null);
- 
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const handleSearch = async (query) => {
+    console.log("Inside handle search");
+    console.log("The user is", user);
+  
+    if (!query) {
+      return;
+    }
+  
+    try {
+      setLoading(true);
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      };
+  
+      console.log(query);
+      const { data } = await axios.get(
+        `http://localhost:5000/api/thesis/allment?search=${query}`,
+        config
+      );
+  
+      console.log(data);
+      setLoading(false);
+      setSearchResult(data);
+    } catch (error) {
+      // Handle errors here
+      console.error("Error occurred:", error);
+      setLoading(false);
+      // Add code to display an error message to the user, if needed
+    }
+  };
+  
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     console.log(selectedFile);
@@ -47,6 +84,7 @@ const FileUploadComponent = ({addUrlToChatPdf}) => {
       <input type="file" accept=".pdf, .docx" onChange={handleFileChange} />
       <button onClick={uploadFileToCloudinary}>Upload</button>
     </div>
+    
   );
 };
  
