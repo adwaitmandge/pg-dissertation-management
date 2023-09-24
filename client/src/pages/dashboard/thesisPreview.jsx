@@ -24,12 +24,13 @@ function ThesisPreview() {
   const [text, setText] = useState("");
   const [result, setResult] = useState();
   const [feedback, setFeedback] = useState("");
-  const [docs, setDocs] = useState([]);
-
   const { user } = UserState();
   const location = useLocation();
   const { thesis } = location.state;
   console.log(thesis);
+
+  const cloudinaryLink = thesis.cloudinaryLink; // Assuming 'cloudinaryLink' is the property name
+console.log(cloudinaryLink);
 
   function str2xml(str) {
     if (str.charCodeAt(0) === 65279) {
@@ -145,14 +146,15 @@ function ThesisPreview() {
     }
   };
 
-  useEffect(() => {
-    console.log(thesis.cloudinaryLink);
-    setDocs[{ uri: thesis.cloudinaryLink }];
-  }, [location.state]);
+  const docs = [
+    {
+      uri: cloudinaryLink,
+    },
+  ];
 
   // console.log(paragraphs);
   return (
-    <div className="h-full flex-col">
+    <div className="h-[70vh] flex-col">
       <div>
         <DocViewer
           className="h-[70vh]"
@@ -160,70 +162,66 @@ function ThesisPreview() {
           documents={docs}
         />
       </div>
-      <div>
-        {user?.role == "Mentor" && (
-          <button
-            onClick={() =>
-              onUrlUpload(
-                "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx"
-              )
-            }
-            type="button"
-            class="mr-2 mt-3 mb-2 inline-flex h-12 w-[100%] items-center justify-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-base font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
-          >
-            Plagiarism Detector
-          </button>
-        )}
+      {user?.role == "Mentor" && (
+        <button
+          onClick={() =>
+            onUrlUpload(
+              cloudinaryLink
+            )
+          }
+          type="button"
+          class="mr-2 mt-3 mb-2 inline-flex h-12 w-[100%] items-center justify-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-lg font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
+        >
+          Plagiarism Detector
+        </button>
+      )}
 
-        <>
-          {user?.role == "Mentor" && (
-            <div className="flex flex-col">
-              <button
-                type="button"
-                class="mr-2 mb-2 rounded-lg bg-green-600 px-5 py-2.5 text-base font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              >
-                Accept
-              </button>
-
-              <button
-                onClick={() => sendFeeback("Reject")}
-                type="button"
-                class="mr-2 mb-2 rounded-lg bg-red-700 px-5 py-2.5 text-center text-base font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-              >
-                Reject
-              </button>
-
-              {/* <input type="text" onChange={(e) => setFeedback(e.target.value)} /> */}
+      {result && (
+        <div>
+          <h3>Plagiarism Check Result</h3>
+          <p>Percent Plagiarism: {result.percentPlagiarism}%</p>
+          {result.sources.length > 0 && (
+            <div>
+              <h4>Sources:</h4>
+              <ul>
+                {result.sources.map((source, index) => (
+                  <li key={index}>
+                    <p>Title: {source.title}</p>
+                    <p>
+                      URL: <a href={source.url}>{source.url}</a>
+                    </p>
+                    <p>Match Text: {source.matches[0].matchText}</p>{" "}
+                    {/* Displaying the first match as an example */}
+                    <p>Score: {source.matches[0].score}</p>{" "}
+                    {/* Displaying the score of the first match */}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
-        </>
-
-        {result && (
-          <div>
-            <h3>Plagiarism Check Result</h3>
-            <p>Percent Plagiarism: {result.percentPlagiarism}%</p>
-            {result.sources.length > 0 && (
-              <div>
-                <h4>Sources:</h4>
-                <ul>
-                  {result.sources.map((source, index) => (
-                    <li key={index}>
-                      <p>Title: {source.title}</p>
-                      <p>
-                        URL: <a href={source.url}>{source.url}</a>
-                      </p>
-                      <p>Match Text: {source.matches[0].matchText}</p>{" "}
-                      {/* Displaying the first match as an example */}
-                      <p>Score: {source.matches[0].score}</p>{" "}
-                      {/* Displaying the score of the first match */}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+        </div>
+      )}
+      <>
+        {user?.role == "Mentor" && (
+          <>
+            <button
+              onClick={() => sendFeeback("Accept")}
+              type="button"
+              class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
+            >
+              Accept
+            </button>
+            <button
+              onClick={() => sendFeeback("Reject")}
+              type="button"
+              class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
+            >
+              Reject
+            </button>
+            <input type="text" onChange={(e) => setFeedback(e.target.value)} />
+          </>
         )}
-      </div>
+      </>
     </div>
   );
 }

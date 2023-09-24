@@ -16,75 +16,46 @@ export function Notifications() {
   const { user } = UserState();
 
   const [docs, setDocs] = useState([]);
-  console.log(user);
   const navigate = useNavigate();
 
-  const [showAlerts, setShowAlerts] = React.useState({
+  const [showAlerts, setShowAlerts] = useState({
     blue: true,
     green: true,
     orange: true,
     red: true,
   });
-
-  const [showAlertsWithIcon, setShowAlertsWithIcon] = React.useState({
-    blue: true,
-    green: true,
-    orange: true,
-    red: true,
-  });
-  const alerts = ["blue", "green", "orange", "red"];
 
   const [pendingThesis, setPendingThesis] = useState([]);
-  if (user?.role == "Mentor") {
-    console.log("I am mentor");
-    const getPendingThesis = async () => {
-      try {
-        const res = await fetch(
-          "http://localhost:5000/api/thesis/thesis-notifications",
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`,
-            },
-          }
-        );
-
-        const data = await res.json();
-        console.log(data);
-        setPendingThesis(data);
-      } catch (err) {
-        console.error(err.message);
+  
+  const getPendingThesis = async () => {
+    try {
+      let endpoint = "";
+      if (user.role === "Mentor") {
+        console.log("I am mentor");
+        endpoint = "thesis-notifications";
+      } else if (user.role === "Student") {
+        console.log("I am a student");
+        endpoint = "getfeedback";
       }
-    };
 
-    useEffect(() => {
-      getPendingThesis();
-    }, [user]);
-  }
-  if (user?.role == "Student") {
-    console.log("I am a student");
-    const getPendingThesis = async () => {
-      try {
-        const res = await fetch(
-          "http://localhost:5000/api/thesis/getfeedback",
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`,
-            },
-          }
-        );
+      const res = await fetch(`http://localhost:5000/api/thesis/${endpoint}`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
 
-        const data = await res.json();
-        console.log(data);
-        setPendingThesis(data);
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
+      const data = await res.json();
+      console.log(data);
+      setPendingThesis(data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-    useEffect(() => {
-      getPendingThesis();
-    }, [user]);
-  }
+  useEffect(() => {
+    getPendingThesis();
+  }, [user]);
+
   console.log("Hi");
   return (
     <div className="mx-auto my-20 flex max-w-screen-lg flex-col gap-8">
@@ -104,11 +75,12 @@ export function Notifications() {
             <Link
               to={`/dashboard/preview/thesis/${thesis._id}`}
               state={{ thesis: thesis }}
+              key={index}
             >
-              {user.role == "Student" && (
+              {user.role === "Student" && (
                 <>
                   {thesis?.feedback}
-                  {thesis?.status == "Accept" && (
+                  {thesis?.status === "Accept" && (
                     <Alert
                       key={index}
                       show={showAlerts["green"]}
@@ -124,7 +96,7 @@ export function Notifications() {
                       {thesis?.status}
                     </Alert>
                   )}
-                  {thesis?.status == "Pending" && (
+                  {thesis?.status === "Pending" && (
                     <Alert
                       key={index}
                       show={showAlerts["orange"]}
@@ -140,7 +112,7 @@ export function Notifications() {
                       {thesis?.status}
                     </Alert>
                   )}
-                  {thesis?.status == "Reject" && (
+                  {thesis?.status === "Reject" && (
                     <Alert
                       key={index}
                       show={showAlerts["red"]}
@@ -158,7 +130,7 @@ export function Notifications() {
                   )}
                 </>
               )}
-              {user.role == "Mentor" && (
+              {user.role === "Mentor" && (
                 <>
                   {thesis?.student.name}
                   <Alert
@@ -181,40 +153,6 @@ export function Notifications() {
           ))}
         </CardBody>
       </Card>
-      {/* <Card>
-        <CardHeader
-          color="transparent"
-          floated={false}
-          shadow={false}
-          className="m-0 p-4"
-        >
-          <Typography variant="h5" color="blue-gray">
-            Alerts with Icon
-          </Typography>
-        </CardHeader>
-        <CardBody className="flex flex-col gap-4 p-4">
-          {alerts.map((color) => (
-            <Alert
-              key={color}
-              show={showAlertsWithIcon[color]}
-              color={color}
-              icon={
-                <InformationCircleIcon strokeWidth={2} className="h-6 w-6" />
-              }
-              dismissible={{
-                onClose: () =>
-                  setShowAlertsWithIcon((current) => ({
-                    ...current,
-                    [color]: false,
-                  })),
-              }}
-            >
-              A simple {color} alert with an <a href="#">example link</a>. Give
-              it a click if you like.
-            </Alert>
-          ))}
-        </CardBody>
-      </Card> */}
     </div>
   );
 }
