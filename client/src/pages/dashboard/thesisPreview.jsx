@@ -29,6 +29,9 @@ function ThesisPreview() {
   const { thesis } = location.state;
   console.log(thesis);
 
+  const cloudinaryLink = thesis.cloudinaryLink; // Assuming 'cloudinaryLink' is the property name
+console.log(cloudinaryLink);
+
   function str2xml(str) {
     if (str.charCodeAt(0) === 65279) {
       // BOM sequence
@@ -145,7 +148,7 @@ function ThesisPreview() {
 
   const docs = [
     {
-      uri: "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx",
+      uri: cloudinaryLink,
     },
   ];
 
@@ -163,7 +166,7 @@ function ThesisPreview() {
         <button
           onClick={() =>
             onUrlUpload(
-              "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx"
+              cloudinaryLink
             )
           }
           type="button"

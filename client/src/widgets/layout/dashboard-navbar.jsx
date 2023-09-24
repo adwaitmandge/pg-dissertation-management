@@ -148,7 +148,7 @@ export function DashboardNavbar() {
                 } p-4 shadow-lg`}
               >
                 {searchResult?.map((user, index) => {
-                  if (index <= 5)
+                  if (index <= 5 && user?.role != "Mentor")
                     return (
                       <div
                         onClick={() => {
