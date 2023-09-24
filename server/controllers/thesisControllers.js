@@ -206,6 +206,52 @@ const updateFeedback = async (req, res) => {
   }
 };
 
+const downloadFile = async (req, res) => {
+  try {
+    // Create a new PDF document
+    const pdfDoc = await PDFDocument.create();
+
+    // Add a new page to the PDF
+    // Get the content string you want to add to the PDF
+    const { data } = req.body;
+    const paragraphs = data.split("\n");
+
+    console.log(paragraphs);
+
+    for (const paragraph of paragraphs) {
+      if (paragraph == "" || paragraph == " " || paragraph == "  ") {
+        continue;
+      }
+      const page = pdfDoc.addPage([600, 400]); // Adjust the page size as needed
+      const fontSize = 14;
+      const textColor = rgb(0, 0, 0); // Black color
+      const maxLineWidth = 530;
+
+      // Draw the content on the page
+      page.drawText(paragraph, {
+        x: 50,
+        y: 300,
+        size: fontSize,
+        maxWidth: maxLineWidth,
+        color: textColor, // Black color
+      });
+    }
+
+    // Serialize the PDF to bytes
+    const pdfBytes = await pdfDoc.save();
+
+    // Write the PDF bytes to a file
+    await fs.writeFile(
+      "C:/Users/Adwait/OneDrive/Desktop/summary.pdf",
+      pdfBytes
+    );
+    res.json("Success");
+  } catch (error) {
+    console.log("Error occurred while fetching goals at the backend");
+    console.log(error);
+  }
+};
+
 module.exports = {
   createPDF,
   summarize,
@@ -214,4 +260,5 @@ module.exports = {
   fetchNotifications,
   updateFeedback,
   fetchMyThesis,
+  downloadFile,
 };
