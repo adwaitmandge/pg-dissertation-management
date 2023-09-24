@@ -6,7 +6,7 @@ const axios = require("axios");
 const { default: mongoose } = require("mongoose");
 const User = require("../models/userModel");
 const PendingThesis = require("../models/pendingThesisModel");
-
+const Connection=require("../models/connectionsModel");
 const cloudinary = require("cloudinary").v2;
 // Configure Cloudinary with your credentials
 cloudinary.config({
@@ -127,8 +127,9 @@ const summarize = async (req, res) => {
 
 const fetchAllThesis = async (req, res) => {
   try {
-    const professor = await User.findOne({ name: "Prof. Shrawne" });
-    console.log(professor);
+    // console.log(req.user);
+    const professor = await User.findOne({ name: req.user.name });
+    // console.log(professor);
     res.json(professor);
   } catch (err) {
     console.error(err.message);
@@ -144,25 +145,65 @@ const fetchMyThesis = async (req, res) => {
   }
 };
 
-const firstSubmission = async (req, res) => {
-  try {
-    console.log("Inside the firstSubmisstion route");
-    console.log(req.body);
-    const { publications } = req.body;
-    console.log(publications);
+// const firstSubmission = async (req, res) => {
+//   try {
+//     console.log("Inside the firstSubmisstion route");
+//     // console.log(req.body);
+//     const { publications } = req.body;
+//     // console.log(publications);
 
-    const pendingThesis = await PendingThesis.create({
-      cloudinaryLink: publications[0].cloudinaryLink,
-      student: req.user._id,
-      mentor: "65085b05d2c40c0d85800534",
+//     const findmentor = await Connection.find({from:req.user._id});
+//      console.log(findmentor,"I am finding mentor");
+//      console.log(findmentor.to);
+//     const pendingThesis = await PendingThesis.create({
+//       cloudinaryLink: publications[0].cloudinaryLink,
+//       student: req.user._id,
+//       mentor: findmentor.to,
+//     });
+
+//     console.log(pendingThesis,"New submission");
+
+//     res.json(pendingThesis);
+//   } catch (err) {
+//     console.error(err.message);
+//   }
+// };
+
+const firstSubmission = (req, res) => {
+  console.log("Inside the firstSubmisstion route");
+  
+  // console.log(req.body);
+  const { publications } = req.body;
+  // console.log(publications);
+
+  Connection.find({ from: req.user._id })
+    .then(findmentor => {
+      console.log(findmentor, "I am finding mentor");
+      if (findmentor.length > 0) {
+        console.log(findmentor[0].to);
+        
+        PendingThesis.create({
+          cloudinaryLink: publications[0].cloudinaryLink,
+          student: req.user._id,
+          mentor: findmentor[0].to, // Access the 'to' property of the first element in the array
+        })
+        .then(pendingThesis => {
+          console.log(pendingThesis, "New submission");
+          res.json(pendingThesis);
+        })
+        .catch(err => {
+          console.error(err.message);
+          res.status(500).send("Internal Server Error");
+        });
+      } else {
+        // Handle the case where no mentor was found
+        res.status(404).json({ error: "No mentor found" });
+      }
+    })
+    .catch(err => {
+      console.error(err.message);
+      res.status(500).send("Internal Server Error");
     });
-
-    console.log(pendingThesis);
-
-    res.json(pendingThesis);
-  } catch (err) {
-    console.error(err.message);
-  }
 };
 
 const fetchNotifications = async (req, res) => {
