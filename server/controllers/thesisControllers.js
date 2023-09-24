@@ -6,7 +6,7 @@ const axios = require("axios");
 const { default: mongoose } = require("mongoose");
 const User = require("../models/userModel");
 const PendingThesis = require("../models/pendingThesisModel");
-const Connection=require("../models/connectionsModel");
+const Connection = require("../models/connectionsModel");
 const cloudinary = require("cloudinary").v2;
 // Configure Cloudinary with your credentials
 cloudinary.config({
@@ -169,29 +169,24 @@ const fetchMyThesis = async (req, res) => {
 //   }
 // };
 
-const firstSubmission = async(req, res) => {
+const firstSubmission = async (req, res) => {
   console.log("Inside the firstSubmisstion route");
-  
+
   // console.log(req.body);
-  const { publications,selectedUserId } = req.body;
+  const { publications, selectedUserId } = req.body;
   // console.log(publications);
 
-        try{
-
-          const newthes = await PendingThesis.create({
-            cloudinaryLink: publications[0].cloudinaryLink,
-            student: req.user._id,
-            mentor: selectedUserId, // Access the 'to' property of the first element in the array
-          })
-          console.log(newthes,"newthes");
-          res.json(newthes);
-        }
-        catch(err)
-        {
-          res.json(err);
-        }
-
-       
+  try {
+    const newthes = await PendingThesis.create({
+      cloudinaryLink: publications[0].cloudinaryLink,
+      student: req.user._id,
+      mentor: selectedUserId, // Access the 'to' property of the first element in the array
+    });
+    console.log(newthes, "newthes");
+    res.json(newthes);
+  } catch (err) {
+    res.json(err);
+  }
 };
 
 const fetchNotifications = async (req, res) => {
@@ -280,23 +275,25 @@ const downloadFile = async (req, res) => {
     console.log(error);
   }
 };
+
 const allMentors = asyncHandler(async (req, res) => {
   console.log("Inside all mentors");
-  const keyword = req.query.search ? { name: { $regex: req.query.search, $options: "i" } } : {};
+  const keyword = req.query.search
+    ? { name: { $regex: req.query.search, $options: "i" } }
+    : {};
 
-// Find users based on the search keyword, excluding the currently authenticated user
-const users = await User.find({ ...keyword, _id: { $ne: req.user._id } });
+  // Find users based on the search keyword, excluding the currently authenticated user
+  const users = await User.find({ ...keyword, _id: { $ne: req.user._id } });
 
   // Then, find connections where the "to" field matches the found users
   const connections = await Connection.find({
     from: req.user._id,
-    to: { $in: users.map(user => user._id) },
+    to: { $in: users.map((user) => user._id) },
   }).populate("to");
-  
+
   console.log(connections);
   res.send(connections);
 });
-
 
 module.exports = {
   createPDF,
@@ -307,5 +304,5 @@ module.exports = {
   updateFeedback,
   fetchMyThesis,
   downloadFile,
-  allMentors
+  allMentors,
 };
