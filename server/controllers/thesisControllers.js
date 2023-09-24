@@ -169,41 +169,29 @@ const fetchMyThesis = async (req, res) => {
 //   }
 // };
 
-const firstSubmission = (req, res) => {
+const firstSubmission = async(req, res) => {
   console.log("Inside the firstSubmisstion route");
   
   // console.log(req.body);
-  const { publications } = req.body;
+  const { publications,selectedUserId } = req.body;
   // console.log(publications);
 
-  Connection.find({ from: req.user._id })
-    .then(findmentor => {
-      console.log(findmentor, "I am finding mentor");
-      if (findmentor.length > 0) {
-        console.log(findmentor[0].to);
-        
-        PendingThesis.create({
-          cloudinaryLink: publications[0].cloudinaryLink,
-          student: req.user._id,
-          mentor: findmentor[0].to, // Access the 'to' property of the first element in the array
-        })
-        .then(pendingThesis => {
-          console.log(pendingThesis, "New submission");
-          res.json(pendingThesis);
-        })
-        .catch(err => {
-          console.error(err.message);
-          res.status(500).send("Internal Server Error");
-        });
-      } else {
-        // Handle the case where no mentor was found
-        res.status(404).json({ error: "No mentor found" });
-      }
-    })
-    .catch(err => {
-      console.error(err.message);
-      res.status(500).send("Internal Server Error");
-    });
+        try{
+
+          const newthes = await PendingThesis.create({
+            cloudinaryLink: publications[0].cloudinaryLink,
+            student: req.user._id,
+            mentor: selectedUserId, // Access the 'to' property of the first element in the array
+          })
+          console.log(newthes,"newthes");
+          res.json(newthes);
+        }
+        catch(err)
+        {
+          res.json(err);
+        }
+
+       
 };
 
 const fetchNotifications = async (req, res) => {
@@ -292,6 +280,23 @@ const downloadFile = async (req, res) => {
     console.log(error);
   }
 };
+const allMentors = asyncHandler(async (req, res) => {
+  console.log("Inside all mentors");
+  const keyword = req.query.search ? { name: { $regex: req.query.search, $options: "i" } } : {};
+
+// Find users based on the search keyword, excluding the currently authenticated user
+const users = await User.find({ ...keyword, _id: { $ne: req.user._id } });
+
+  // Then, find connections where the "to" field matches the found users
+  const connections = await Connection.find({
+    from: req.user._id,
+    to: { $in: users.map(user => user._id) },
+  }).populate("to");
+  
+  console.log(connections);
+  res.send(connections);
+});
+
 
 module.exports = {
   createPDF,
@@ -302,4 +307,5 @@ module.exports = {
   updateFeedback,
   fetchMyThesis,
   downloadFile,
+  allMentors
 };
