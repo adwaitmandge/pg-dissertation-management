@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 
 export function Notifications() {
   const { user } = UserState();
+
   const [docs, setDocs] = useState([]);
   console.log(user);
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export function Notifications() {
   const alerts = ["blue", "green", "orange", "red"];
 
   const [pendingThesis, setPendingThesis] = useState([]);
-  if (user.role == "Mentor") {
+  if (user?.role == "Mentor") {
     console.log("I am mentor");
     const getPendingThesis = async () => {
       try {
@@ -59,7 +60,7 @@ export function Notifications() {
       getPendingThesis();
     }, [user]);
   }
-  if (user.role == "Student") {
+  if (user?.role == "Student") {
     console.log("I am a student");
     const getPendingThesis = async () => {
       try {
