@@ -14,6 +14,8 @@ import DocViewer, { PDFRenderer, DocViewerRenderers } from "react-doc-viewer";
 import PizZip from "pizzip";
 import { DOMParser } from "@xmldom/xmldom";
 import { UserState } from "@/context/UserProvider";
+import React from "react";
+import { Web3Storage, File } from "web3.storage";
 
 function ThesisPreview() {
   const [messages, setMessages] = useState([]);
@@ -28,6 +30,9 @@ function ThesisPreview() {
   const location = useLocation();
   const { thesis } = location.state;
   console.log(thesis);
+
+  const cloudinaryLink = thesis.cloudinaryLink; // Assuming 'cloudinaryLink' is the property name
+  console.log(cloudinaryLink);
 
   function str2xml(str) {
     if (str.charCodeAt(0) === 65279) {
@@ -145,9 +150,31 @@ function ThesisPreview() {
 
   const docs = [
     {
-      uri: "https://res.cloudinary.com/dralpqhoq/raw/upload/v1694866431/qoeahcitxmwlkumhg7mb.docx",
+      uri: cloudinaryLink,
     },
   ];
+
+  const cloudinaryUrl = cloudinaryLink;
+  const web3StorageApiKey =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDhhOTM2OWQxMzU5ODA5QzM1ZDhiODRjMGVjNDA5NzRGN0QyODhmYTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTE1MTgwMjA2NjUsIm5hbWUiOiJpcGZzX2ZpbGUifQ.Xoq3NEHglUKD1qFBo5-URotk8WB3Dbcnnn5MTSiLaww";
+
+  const handleUpload = async () => {
+    try {
+      // Step 1: Retrieve the File from Cloudinary
+      const { data } = await axios.get(cloudinaryUrl, {
+        responseType: "arraybuffer",
+      });
+
+      // Step 2: Upload to web3.storage
+      const client = new Web3Storage({ token: web3StorageApiKey });
+      const files = [new File([data], "your-file-name.ext")]; // Adjust the file name and extension as needed
+
+      const cid = await client.put(files);
+      console.log(`File uploaded to web3.storage with CID: ${cid}`);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   // console.log(paragraphs);
   return (
@@ -214,6 +241,13 @@ function ThesisPreview() {
               class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
             >
               Reject
+            </button>
+            <button
+              onClick={handleUpload}
+              type="button"
+              class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
+            >
+              Upload on IPFS
             </button>
             <input type="text" onChange={(e) => setFeedback(e.target.value)} />
           </>
