@@ -41,13 +41,14 @@ function ThesisUpload() {
   const [input, setInput] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [showResults, setShowResults] = useState(false);
-
+  const [selectedUserId, setSelectedUserId] = useState(null);
   // Other state and context variable declarations...
   const toast = useToast();
 
   const navigate = useNavigate();
 
   const selectMentor = (id) => {
+    console.log(id);
     setSelectedUserId(id);
     setShowResults(!showResults);
     toast({
@@ -164,7 +165,7 @@ function ThesisUpload() {
       console.error("Error uploading file to Cloudinary:", error);
     }
   };
-  const [selectedUserId, setSelectedUserId] = useState(null);
+
   console.log(selectedUserId);
 
   return (
@@ -189,7 +190,13 @@ function ThesisUpload() {
             } p-4 shadow-lg`}
           >
             {searchResult?.map((user, index) => (
-              <div onClick={() => selectMentor(user.to_id)} key={user._id}>
+              <div
+                onClick={() => {
+                  selectMentor(user.to._id);
+                  console.log(user);
+                }}
+                key={user._id}
+              >
                 <UserListItem
                   user={user.to}
                   onClick={() => {

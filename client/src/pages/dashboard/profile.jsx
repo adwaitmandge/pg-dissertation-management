@@ -109,7 +109,7 @@ export function Profile() {
               </Tabs>
             </div>
           </div>
-          <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-2">
             <div>
               <Typography variant="h6" color="blue-gray" className="mb-3">
                 Platform Settings
@@ -159,24 +159,6 @@ export function Profile() {
                 </Tooltip>
               }
             />
-            <div>
-              <Typography variant="h6" color="blue-gray" className="mb-3">
-                Platform Settings
-              </Typography>
-              <ul className="flex flex-col gap-6">
-                {conversationsData.map((props) => (
-                  <MessageCard
-                    key={props.name}
-                    {...props}
-                    action={
-                      <Button variant="text" size="sm">
-                        reply
-                      </Button>
-                    }
-                  />
-                ))}
-              </ul>
-            </div>
           </div>
           <div className="px-4 pb-4">
             <Typography variant="h6" color="blue-gray" className="mb-2">

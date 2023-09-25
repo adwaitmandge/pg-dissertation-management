@@ -99,19 +99,22 @@ function ThesisPreview() {
       const blob = await response.blob();
       const reader = new FileReader();
 
+      let ans = "";
+
       reader.onload = (e) => {
         const content = e.target.result;
         const paragraphs = getParagraphs(content);
         const newText = paragraphs.join(" ");
         setText(newText);
+        ans = newText;
         checkPlagiarism(newText);
-        // console.log(newText);
         setParagraphs(paragraphs);
       };
 
       reader.onerror = (err) => console.error("File reader error:", err);
 
       reader.readAsBinaryString(blob);
+      await checkPlagiarism(ans);
     } catch (error) {
       console.error("Error fetching the DOCX file from URL:", error);
     }

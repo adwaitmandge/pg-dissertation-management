@@ -13,10 +13,9 @@ const Videocall = () => {
   const handleSubmit = () => {
     if (!roomCode) {
       console.log("Enter room code");
-      
+
       return;
     }
-    e.preventDefault();
     console.log(roomCode);
     navigate(`/dashboard/room/${roomCode}`);
   };

@@ -45,6 +45,11 @@ export function DashboardNavbar() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/auth/sign-in");
+  };
+
   const handleSearch = async (query) => {
     console.log("Inside handle search");
     console.log("The user is", user);
@@ -147,7 +152,7 @@ export function DashboardNavbar() {
                   showResults ? "" : "hidden"
                 } p-4 shadow-lg`}
               >
-                {searchResult?.map((user, index) => {
+                {searchResult.map((user, index) => {
                   if (index <= 5 && user?.role != "Mentor")
                     return (
                       <div
@@ -168,6 +173,7 @@ export function DashboardNavbar() {
                       </div>
                     );
                 })}
+                {searchResult.length === 0 && <div>No results found.</div>}
               </div>
             )}
           </div>
@@ -179,23 +185,23 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          <Link to="/auth/sign-in">
-            <Button
-              variant="text"
-              color="blue-gray"
-              className="hidden items-center gap-1 px-4 xl:flex"
-            >
-              <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign In
-            </Button>
-            <IconButton
-              variant="text"
-              color="blue-gray"
-              className="grid xl:hidden"
-            >
-              <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-            </IconButton>
-          </Link>
+
+          <Button
+            onClick={logoutHandler}
+            variant="text"
+            color="blue-gray"
+            className="hidden items-center gap-1 px-4 xl:flex"
+          >
+            <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+            Logout
+          </Button>
+          <IconButton
+            variant="text"
+            color="blue-gray"
+            className="grid xl:hidden"
+          >
+            <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+          </IconButton>
           <IconButton
             variant="text"
             color="blue-gray"
