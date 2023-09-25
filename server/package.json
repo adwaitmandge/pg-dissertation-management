@@ -13,5 +13,8 @@
     "pdf-creator-node": "^2.3.5",
     "pdf-lib": "^1.17.1",
     "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

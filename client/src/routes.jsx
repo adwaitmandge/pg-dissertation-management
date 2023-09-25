@@ -30,6 +30,8 @@ import ThesisPreview from "./pages/dashboard/thesisPreview";
 import Scibot from "./pages/dashboard/scibot";
 import PendingConnections from "./pages/dashboard/pendingConnections";
 import ConnectionProfile from "./pages/dashboard/connectionProfile";
+import IPFS from "./pages/dashboard/IPFS";
+
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -127,6 +129,12 @@ export const routes = [
         name: "Science Bot",
         path: "scibot",
         element: <Scibot />,
+      },
+      {
+        icon: <BookOpenIcon {...icon} />,
+        name: "IPFS",
+        path: "IPFS",
+        element: <IPFS />,
       },
       // {
       //   icon: <ChatBubbleLeftRightIcon {...icon} />,
