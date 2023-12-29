@@ -69,7 +69,7 @@ const createPDF = asyncHandler(async (req, res) => {
     // Write the PDF bytes to a file
     await fs.writeFile("output.pdf", pdfBytes);
     const localPdfPath =
-      "C:/Users/Adwait/OneDrive/Desktop/builds/sih/server/output.pdf";
+      "output.pdf";
 
     try {
       const publicUrl = await uploadPdfToCloudinary(localPdfPath);

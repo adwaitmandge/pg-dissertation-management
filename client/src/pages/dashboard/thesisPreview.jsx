@@ -136,11 +136,9 @@ function ThesisPreview() {
         },
         {
           headers: {
-            "content-type": "application/json",
-            "X-RapidAPI-Key":
-              "ed05d4f642msh97943a1a1fc1e19p163221jsn93ffc71767fe",
-            "X-RapidAPI-Host":
-              "plagiarism-checker-and-auto-citation-generator-multi-lingual.p.rapidapi.com",
+            'content-type': 'application/json',
+            'X-RapidAPI-Key': '2cd187e4famshf33175d4d1186b5p1e0980jsna591d05cf3e7',
+            'X-RapidAPI-Host': 'plagiarism-checker-and-auto-citation-generator-multi-lingual.p.rapidapi.com'
           },
         }
       );
@@ -221,10 +219,10 @@ function ThesisPreview() {
                         {source.url}
                       </a>
                     </p>
-                    <p className="mb-1">
+                    {/* <p className="mb-1">
                       Match Text: {source.matches[0].matchText}
                     </p>
-                    <p className="mb-1">Score: {source.matches[0].score}</p>
+                    <p className="mb-1">Score: {source.matches[0].score}</p> */}
                   </li>
                 ))}
               </ul>
