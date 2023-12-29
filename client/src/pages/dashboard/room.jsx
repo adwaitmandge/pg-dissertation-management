@@ -6,8 +6,8 @@ const Room = () => {
   const { roomId } = useParams();
 
   const config = async (element) => {
-    const appID = 1144031819;
-    const serverSecret = "9e858d359894ece88c0629069f0cc7dc";
+    const appID = 1988490080;
+    const serverSecret = "313754a6250a951c2758535aad7bcd50";
     const token = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,

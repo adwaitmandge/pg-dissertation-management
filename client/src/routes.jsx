@@ -130,12 +130,12 @@ export const routes = [
         path: "scibot",
         element: <Scibot />,
       },
-      {
-        icon: <BookOpenIcon {...icon} />,
-        name: "IPFS",
-        path: "IPFS",
-        element: <IPFS />,
-      },
+      // {
+      //   icon: <BookOpenIcon {...icon} />,
+      //   name: "IPFS",
+      //   path: "IPFS",
+      //   element: <IPFS />,
+      // },
       // {
       //   icon: <ChatBubbleLeftRightIcon {...icon} />,
       //   name: "chat",

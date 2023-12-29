@@ -124,6 +124,7 @@ function ThesisPreview() {
 
   const checkPlagiarism = async (text) => {
     console.log("INside plagai");
+    console.log(text);
     try {
       const response = await axios.post(
         "https://plagiarism-checker-and-auto-citation-generator-multi-lingual.p.rapidapi.com/plagiarism",
@@ -137,7 +138,7 @@ function ThesisPreview() {
           headers: {
             "content-type": "application/json",
             "X-RapidAPI-Key":
-              "4642336211mshda189de3c3f26aep1ff74fjsnb587261e6d07",
+              "ed05d4f642msh97943a1a1fc1e19p163221jsn93ffc71767fe",
             "X-RapidAPI-Host":
               "plagiarism-checker-and-auto-citation-generator-multi-lingual.p.rapidapi.com",
           },
@@ -159,7 +160,7 @@ function ThesisPreview() {
 
   const cloudinaryUrl = cloudinaryLink;
   const web3StorageApiKey =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDhhOTM2OWQxMzU5ODA5QzM1ZDhiODRjMGVjNDA5NzRGN0QyODhmYTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTE1MTgwMjA2NjUsIm5hbWUiOiJpcGZzX2ZpbGUifQ.Xoq3NEHglUKD1qFBo5-URotk8WB3Dbcnnn5MTSiLaww";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNkQjc0YWFiMTExZThEMDJGMEE0Q2E4NUNkNzlGZkU4MzBjNmM2YmUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTU2NTg2MjA0MzMsIm5hbWUiOiJwaXRjaCJ9.GspAgu0MxNdGKwqonWyvMVmAFl5DomgV-tZ9_KWO6ik";
 
   const handleUpload = async () => {
     try {
@@ -201,22 +202,29 @@ function ThesisPreview() {
 
       {result && (
         <div>
-          <h3>Plagiarism Check Result</h3>
-          <p>Percent Plagiarism: {result.percentPlagiarism}%</p>
+          <h3 className="mb-2 text-2xl font-semibold">
+            Plagiarism Check Result
+          </h3>
+          <p className="mb-2 w-[25%] rounded-sm bg-red-400 p-2 font-bold">
+            Percent Plagiarism: {result.percentPlagiarism}%
+          </p>
           {result.sources.length > 0 && (
             <div>
-              <h4>Sources:</h4>
+              <h4 className="mt-4 mb-2 text-lg font-semibold">Sources:</h4>
               <ul>
                 {result.sources.map((source, index) => (
-                  <li key={index}>
-                    <p>Title: {source.title}</p>
-                    <p>
-                      URL: <a href={source.url}>{source.url}</a>
+                  <li key={index} className="mb-4">
+                    <p className="font-semibold">Title: {source.title}</p>
+                    <p className="mb-1">
+                      URL:{" "}
+                      <a href={source.url} className="text-blue-600">
+                        {source.url}
+                      </a>
                     </p>
-                    <p>Match Text: {source.matches[0].matchText}</p>{" "}
-                    {/* Displaying the first match as an example */}
-                    <p>Score: {source.matches[0].score}</p>{" "}
-                    {/* Displaying the score of the first match */}
+                    <p className="mb-1">
+                      Match Text: {source.matches[0].matchText}
+                    </p>
+                    <p className="mb-1">Score: {source.matches[0].score}</p>
                   </li>
                 ))}
               </ul>
@@ -258,14 +266,14 @@ function ThesisPreview() {
                 >
                   Reject
                 </button>
-              <button
-              onClick={handleUpload}
-              type="button"
-              class="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
-            >
-              Upload on IPFS
-            </button>
-            </div>
+                <button
+                  onClick={handleUpload}
+                  type="button"
+                  class="mr-2 mb-2 flex w-full items-center justify-center rounded-lg bg-[#050708] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#050708]/90 focus:outline-none focus:ring-4 focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-[#050708]/50"
+                >
+                  Upload on IPFS
+                </button>
+              </div>
             </div>
           </>
         )}

@@ -140,6 +140,7 @@ function ThesisUpload() {
     formData.append("upload_preset", "hfcakj4l"); // Replace with your Cloudinary upload preset
     formData.append("resource_type", "raw"); // Set the resource_type to 'raw'
 
+    console.log("HERe");
     try {
       const response = await axios.post(
         "https://api.cloudinary.com/v1_1/dralpqhoq/raw/upload",
@@ -157,6 +158,7 @@ function ThesisUpload() {
         console.log(publications);
         setPublicationName("");
 
+        console.log("There");
         setFileLoading(false);
       } else {
         console.error("Cloudinary upload failed.");

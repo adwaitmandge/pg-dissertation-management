@@ -24,7 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <UserProvider>
       <ThemeProvider>
         <MaterialTailwindControllerProvider>
-          <ChakraProvider>
+          <ChakraProvider>      
             <App />
           </ChakraProvider>
         </MaterialTailwindControllerProvider>
